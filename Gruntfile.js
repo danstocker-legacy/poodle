@@ -11,6 +11,7 @@ module.exports = function (grunt) {
             'js/Endpoint.js',
             'js/Request.js',
             'js/ServiceEvent.js',
+            'js/Service.js',
             'js/exports.js'
         ],
 
