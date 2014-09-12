@@ -32,7 +32,7 @@
 
     test("Conversion from string", function () {
         var params = {},
-            request = 'foo/bar'.toRequestDescriptor(params);
+            request = 'foo/bar'.toRequest(params);
 
         ok(request.isA(p$.Request), "should return a Request instance");
         equal(request.endpoint.toString(), 'foo/bar', "should set endpoint to one based on the string");
@@ -41,7 +41,7 @@
 
     test("Conversion from array", function () {
         var params = {},
-            request = ['foo', 'bar'].toRequestDescriptor(params);
+            request = ['foo', 'bar'].toRequest(params);
 
         ok(request.isA(p$.Request), "should return a Request instance");
         equal(request.endpoint.toString(), 'foo/bar', "should set endpoint to one based on the array");
@@ -51,7 +51,7 @@
     test("Conversion from Endpoint", function () {
         var params = {},
             endpoint = 'foo/bar'.toEndpoint(),
-            request = endpoint.toRequestDescriptor(params);
+            request = endpoint.toRequest(params);
 
         ok(request.isA(p$.Request), "should return a Request instance");
         strictEqual(request.endpoint, endpoint, "should set endpoint property to the endpoint converted");
@@ -59,7 +59,7 @@
     });
 
     test("HTTP method setter", function () {
-        var request = 'foo/bar'.toRequestDescriptor();
+        var request = 'foo/bar'.toRequest();
 
         raises(function () {
             request.setHttpMethod('foo');
@@ -72,7 +72,7 @@
     test("Header addition", function () {
         expect(3);
 
-        var request = 'foo/bar'.toRequestDescriptor();
+        var request = 'foo/bar'.toRequest();
 
         request.headers.addMocks({
             setItem: function (key, value) {
@@ -85,7 +85,7 @@
     });
 
     test("Headers addition", function () {
-        var request = 'foo/bar'.toRequestDescriptor(),
+        var request = 'foo/bar'.toRequest(),
             addedItems = [];
 
         request.headers.addMocks({
@@ -108,7 +108,7 @@
     test("Parameter addition", function () {
         expect(3);
 
-        var request = 'foo/bar'.toRequestDescriptor();
+        var request = 'foo/bar'.toRequest();
 
         request.params.addMocks({
             setItem: function (key, value) {
@@ -121,7 +121,7 @@
     });
 
     test("Parameters addition", function () {
-        var request = 'foo/bar'.toRequestDescriptor(),
+        var request = 'foo/bar'.toRequest(),
             addedItems = [];
 
         request.params.addMocks({

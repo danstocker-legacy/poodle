@@ -140,7 +140,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
              * @param {object} [params]
              * @returns {poodle.Request}
              */
-            toRequestDescriptor: function (params) {
+            toRequest: function (params) {
                 return poodle.Request.create(this, params);
             }
         });
@@ -162,7 +162,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
          * @param {poodle.Request} expr
          * @returns {boolean}
          */
-        isRequestDescriptor: function (expr) {
+        isRequest: function (expr) {
             return poodle.Request.isBaseOf(expr);
         },
 
@@ -170,7 +170,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
          * @param {poodle.Request} [expr]
          * @returns {boolean}
          */
-        isRequestDescriptorOptional: function (expr) {
+        isRequestOptional: function (expr) {
             return typeof expr === 'undefined' ||
                 poodle.Request.isBaseOf(expr);
         }
@@ -183,9 +183,9 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
              * @param {object} [params]
              * @returns {poodle.Request}
              * @example
-             * ['foo', 'bar'].toRequestDescriptor()
+             * ['foo', 'bar'].toRequest()
              */
-            toRequestDescriptor: function (params) {
+            toRequest: function (params) {
                 return poodle.Request.create(this.toEndpoint(), params);
             }
         },
@@ -199,9 +199,9 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
              * @param {object} [params]
              * @returns {poodle.Request}
              * @example
-             * 'foo/bar'.toRequestDescriptor()
+             * 'foo/bar'.toRequest()
              */
-            toRequestDescriptor: function (params) {
+            toRequest: function (params) {
                 return poodle.Request.create(this.toEndpoint(), params);
             }
         },
