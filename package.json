@@ -3,7 +3,7 @@
     "version"        : "0.1.0",
     "description"    : "Service framework",
     "keywords"       : [
-        "service", "api", "ajax"
+        "service", "transport", "api", "ajax"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
     "copyright"      : "Copyright (c) 2014 Dan Stocker",
@@ -12,7 +12,8 @@
         "dessert": "~0.3.2",
         "troop"  : "~0.7.2",
         "sntls"  : "~0.17.0",
-        "evan"   : "~0.4.1"
+        "evan"   : "~0.4.1",
+        "jquery" : "~2.1.0"
     },
     "devDependencies": {
         "phil"                : "~0.2.3",
