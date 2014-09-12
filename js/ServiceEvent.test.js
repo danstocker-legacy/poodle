@@ -16,6 +16,14 @@
         equal(serviceEvent.jqXhr, undefined, "should set jqXhr property to undefined");
     });
 
+    test("Event surrogate", function () {
+        ok(e$.Event.create('foo', p$.serviceEventSpace).isA(p$.ServiceEvent), "should return ServiceEvent instance");
+    });
+
+    test("Spawning event", function () {
+        ok(p$.serviceEventSpace.spawnEvent('foo').isA(p$.ServiceEvent), "should return ServiceEvent instance");
+    });
+
     test("Request setter", function () {
         var request = 'foo/bar'.toRequest(),
             serviceEvent = p$.ServiceEvent.create('foo');

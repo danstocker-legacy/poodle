@@ -122,3 +122,11 @@ troop.postpone(poodle, 'ServiceEvent', function () {
         });
 });
 
+troop.amendPostponed(evan, 'Event', function () {
+    "use strict";
+
+    evan.Event
+        .addSurrogate(poodle, 'ServiceEvent', function (eventName, eventSpace) {
+            return eventSpace === poodle.serviceEventSpace;
+        });
+});
