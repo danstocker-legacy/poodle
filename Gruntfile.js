@@ -5,6 +5,8 @@ module.exports = function (grunt) {
     var params = {
         files: [
             'js/namespace.js',
+            'js/Deferred.js',
+            'js/Promise.js',
             'js/serviceEventSpace.js',
             'js/Endpoint.js',
             'js/Request.js',
