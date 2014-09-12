@@ -1,6 +1,6 @@
-/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$, jQuery */
+/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$, $ */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
-(function (/**jQuery*/$) {
+(function () {
     "use strict";
 
     var deferreds, promises;
@@ -65,4 +65,4 @@
         deferreds[2].resolve();
         ok(resolved, "should resolve when all promises in the collection are resolved");
     });
-}(jQuery));
+}());
