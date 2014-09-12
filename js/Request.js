@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, evane, poodle */
+/*global dessert, troop, sntls, evan, poodle */
 troop.postpone(poodle, 'Request', function () {
     "use strict";
 
