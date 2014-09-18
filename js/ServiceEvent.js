@@ -76,7 +76,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
-             * @param {sntls.Path} path
+             * @param {sntls.Path} [path]
              * @returns {sntls.Hash}
              */
             getResponseNodeAsHash: function (path) {
