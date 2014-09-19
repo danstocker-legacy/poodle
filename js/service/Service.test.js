@@ -154,4 +154,46 @@
         p$.ServiceEvent.removeMocks();
         p$.Service.promiseRegistry.removeMocks();
     });
+
+    test("Successful offline service call", function () {
+        expect(4);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService(),
+            offlineResponseNode = {};
+
+        service.addMocks({
+            _callService: function (ajaxPromise) {
+                equal(ajaxPromise.state(), 'resolved', "should call internal service method with resolved ajax promise");
+                ajaxPromise.done(function (responseNode, textStatus, jqXHR) {
+                    strictEqual(responseNode, offlineResponseNode, "should pass response node to resolved promise");
+                    strictEqual(textStatus, null, "should pass null as textStatus to resolved promise");
+                    strictEqual(jqXHR, null, "should pass null as jqXhr to resolved promise");
+                });
+            }
+        });
+
+        service.callOfflineServiceWithSuccess(offlineResponseNode);
+    });
+
+    test("Failed offline service call", function () {
+        expect(4);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService(),
+            offlineErrorThrown = {};
+
+        service.addMocks({
+            _callService: function (ajaxPromise) {
+                equal(ajaxPromise.state(), 'rejected', "should call internal service method with rejected ajax promise");
+                ajaxPromise.fail(function (jqXHR, textStatus, errorThrown) {
+                    strictEqual(jqXHR, null, "should pass null as jqXhr to rejected promise");
+                    strictEqual(textStatus, null, "should pass null as textStatus to rejected promise");
+                    strictEqual(errorThrown, offlineErrorThrown, "should pass errorThrown to rejected promise");
+                });
+            }
+        });
+
+        service.callOfflineServiceWithFailure(offlineErrorThrown);
+    });
 }());

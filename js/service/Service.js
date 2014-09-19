@@ -39,7 +39,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              */
             promiseRegistry: sntls.Collection.create()
         })
-        .addPrivateMethods(/** @lends poodle.Service */{
+        .addPrivateMethods(/** @lends poodle.Service# */{
             /**
              * @param {object} ajaxOptions
              * @returns {jQuery.Promise}
@@ -47,26 +47,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              */
             _ajaxProxy: function (ajaxOptions) {
                 return $.ajax(ajaxOptions);
-            }
-        })
-        .addMethods(/** @lends poodle.Service */{
-            /**
-             * @param {poodle.Request} request
-             * @ignore
-             */
-            init: function (request) {
-                dessert.isRequest(request, "Invalid request");
-
-                evan.Evented.init.call(this);
-
-                /** @type {poodle.Request} */
-                this.request = request;
-
-                this.setEventPath(request.endpoint.eventPath);
             },
 
-            /** @returns {jQuery.Promise} */
-            callService: function () {
+            /**
+             * @param {jQuery.Promise} ajaxPromise
+             * @returns {jQuery.Promise}
+             * @private
+             */
+            _callService: function (ajaxPromise) {
                 var that = this,
                     request = this.request,
                     requestId = request.toString(),
@@ -77,15 +65,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 } else {
                     this.triggerSync(this.EVENT_SERVICE_START, request);
 
-                    promise = this._ajaxProxy(
-                        {
-                            dataType: "json",
-                            type    : request.httpMethod,
-                            url     : request.endpoint.toString(),
-                            headers : request.headers.items,
-                            data    : request.params.items,
-                            timeout : this.SERVICE_TIMEOUT
-                        })
+                    promise = ajaxPromise
                         .done(function (responseNode, textStatus, jqXHR) {
                             that.spawnEvent(that.EVENT_SERVICE_SUCCESS)
                                 .setRequest(request)
@@ -108,6 +88,51 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
                     return promise;
                 }
+            }
+        })
+        .addMethods(/** @lends poodle.Service# */{
+            /**
+             * @param {poodle.Request} request
+             * @ignore
+             */
+            init: function (request) {
+                dessert.isRequest(request, "Invalid request");
+
+                evan.Evented.init.call(this);
+
+                /** @type {poodle.Request} */
+                this.request = request;
+
+                this.setEventPath(request.endpoint.eventPath);
+            },
+
+            /**
+             * @param {*} responseNode
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithSuccess: function (responseNode) {
+                return this._callService($.Deferred().resolve(responseNode, null, null));
+            },
+
+            /**
+             * @param {*} errorThrown
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithFailure: function (errorThrown) {
+                return this._callService($.Deferred().reject(null, null, errorThrown));
+            },
+
+            /** @returns {jQuery.Promise} */
+            callService: function () {
+                var request = this.request;
+                return this._callService(this._ajaxProxy({
+                    dataType: "json",
+                    type    : request.httpMethod,
+                    url     : request.endpoint.toString(),
+                    headers : request.headers.items,
+                    data    : request.params.items,
+                    timeout : this.SERVICE_TIMEOUT
+                }));
             }
         });
 }, jQuery);
