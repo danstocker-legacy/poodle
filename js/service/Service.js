@@ -51,43 +51,32 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
             /**
              * @param {jQuery.Promise} ajaxPromise
-             * @returns {jQuery.Promise}
              * @private
              */
-            _callService: function (ajaxPromise) {
+            _triggerEvents: function (ajaxPromise) {
                 var that = this,
                     request = this.request,
-                    requestId = request.toString(),
-                    promise = this.promiseRegistry.getItem(requestId);
+                    eventPath = this.eventPath;
 
-                if (promise) {
-                    return promise;
-                } else {
-                    this.triggerSync(this.EVENT_SERVICE_START, request);
+                // sending notification about starting the service
+                this.triggerSync(this.EVENT_SERVICE_START, request);
 
-                    promise = ajaxPromise
-                        .done(function (responseNode, textStatus, jqXHR) {
-                            that.spawnEvent(that.EVENT_SERVICE_SUCCESS)
-                                .setRequest(request)
-                                .setResponseNode(responseNode)
-                                .setJqXhr(jqXHR)
-                                .triggerSync(that.eventPath);
-                        })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
-                            that.spawnEvent(that.EVENT_SERVICE_FAILURE)
-                                .setRequest(request)
-                                .setResponseNode(errorThrown)
-                                .setJqXhr(jqXHR)
-                                .triggerSync(that.eventPath);
-                        })
-                        .always(function () {
-                            that.promiseRegistry.deleteItem(requestId);
-                        });
-
-                    this.promiseRegistry.setItem(requestId, promise);
-
-                    return promise;
-                }
+                // adding handlers
+                ajaxPromise
+                    .done(function (responseNode, textStatus, jqXHR) {
+                        that.spawnEvent(that.EVENT_SERVICE_SUCCESS)
+                            .setRequest(request)
+                            .setResponseNode(responseNode)
+                            .setJqXhr(jqXHR)
+                            .triggerSync(eventPath);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        that.spawnEvent(that.EVENT_SERVICE_FAILURE)
+                            .setRequest(request)
+                            .setResponseNode(errorThrown)
+                            .setJqXhr(jqXHR)
+                            .triggerSync(eventPath);
+                    });
             }
         })
         .addMethods(/** @lends poodle.Service# */{
@@ -111,7 +100,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithSuccess: function (responseNode) {
-                return this._callService($.Deferred().resolve(responseNode, null, null));
+                return this._triggerEvents($.Deferred().resolve(responseNode, null, null));
             },
 
             /**
@@ -119,20 +108,39 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithFailure: function (errorThrown) {
-                return this._callService($.Deferred().reject(null, null, errorThrown));
+                return this._triggerEvents($.Deferred().reject(null, null, errorThrown));
             },
 
             /** @returns {jQuery.Promise} */
             callService: function () {
-                var request = this.request;
-                return this._callService(this._ajaxProxy({
-                    dataType: "json",
-                    type    : request.httpMethod,
-                    url     : request.endpoint.toString(),
-                    headers : request.headers.items,
-                    data    : request.params.items,
-                    timeout : this.SERVICE_TIMEOUT
-                }));
+                var that = this,
+                    request = this.request,
+                    requestId = request.toString(),
+                    promise = this.promiseRegistry.getItem(requestId);
+
+                if (!promise) {
+                    promise = this._ajaxProxy({
+                        dataType: "json",
+                        type    : request.httpMethod,
+                        url     : request.endpoint.toString(),
+                        headers : request.headers.items,
+                        data    : request.params.items,
+                        timeout : this.SERVICE_TIMEOUT
+                    });
+
+                    // storing promise in registry
+                    this.promiseRegistry.setItem(requestId, promise);
+
+                    // calling service and
+                    this._triggerEvents(promise);
+
+                    promise.always(function () {
+                        // removing promise from registry
+                        that.promiseRegistry.deleteItem(requestId);
+                    });
+                }
+
+                return promise;
             }
         });
 }, jQuery);

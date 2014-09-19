@@ -163,7 +163,7 @@
             offlineResponseNode = {};
 
         service.addMocks({
-            _callService: function (ajaxPromise) {
+            _triggerEvents: function (ajaxPromise) {
                 equal(ajaxPromise.state(), 'resolved', "should call internal service method with resolved ajax promise");
                 ajaxPromise.done(function (responseNode, textStatus, jqXHR) {
                     strictEqual(responseNode, offlineResponseNode, "should pass response node to resolved promise");
@@ -184,7 +184,7 @@
             offlineErrorThrown = {};
 
         service.addMocks({
-            _callService: function (ajaxPromise) {
+            _triggerEvents: function (ajaxPromise) {
                 equal(ajaxPromise.state(), 'rejected', "should call internal service method with rejected ajax promise");
                 ajaxPromise.fail(function (jqXHR, textStatus, errorThrown) {
                     strictEqual(jqXHR, null, "should pass null as jqXhr to rejected promise");
