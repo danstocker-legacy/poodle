@@ -1,24 +1,24 @@
 /*global dessert, troop, sntls, evan, jQuery, poodle */
-troop.postpone(poodle, 'ImageLocation', function () {
+troop.postpone(poodle, 'ImageUrl', function () {
     "use strict";
 
     var base = poodle.Location,
         self = base.extend();
 
     /**
-     * @name poodle.ImageLocation.create
+     * @name poodle.ImageUrl.create
      * @function
      * @param {sntls.Path} imagePath
-     * @returns {poodle.ImageLocation}
+     * @returns {poodle.ImageUrl}
      */
 
     /**
      * @class
      * @extends poodle.Location
      */
-    poodle.ImageLocation = self
+    poodle.ImageUrl = self
         .setEventSpace(poodle.imageEventSpace)
-        .addConstants(/** @lends poodle.ImageLocation */{
+        .addConstants(/** @lends poodle.ImageUrl */{
             /**
              * Root path for all image event paths.
              * @constant
@@ -26,7 +26,7 @@ troop.postpone(poodle, 'ImageLocation', function () {
              */
             EVENT_PATH_ROOT: 'image'
         })
-        .addMethods(/** @lends poodle.ImageLocation# */{
+        .addMethods(/** @lends poodle.ImageUrl# */{
             /**
              * Initiates loading of image.
              * @returns {jQuery.Promise}
@@ -41,9 +41,9 @@ troop.amendPostponed(sntls, 'Path', function () {
     "use strict";
 
     sntls.Path.addMethods(/** @lends sntls.Path# */{
-        /** @returns {poodle.ImageLocation} */
-        toImageLocation: function () {
-            return poodle.ImageLocation.create(this);
+        /** @returns {poodle.ImageUrl} */
+        toImageUrl: function () {
+            return poodle.ImageUrl.create(this);
         }
     });
 });
@@ -54,9 +54,9 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         String.prototype,
         /** @lends String# */{
-            /** @returns {poodle.ImageLocation} */
-            toImageLocation: function () {
-                return poodle.ImageLocation.create(this
+            /** @returns {poodle.ImageUrl} */
+            toImageUrl: function () {
+                return poodle.ImageUrl.create(this
                     .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
@@ -68,9 +68,9 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         Array.prototype,
         /** @lends Array# */{
-            /** @returns {poodle.ImageLocation} */
-            toImageLocation: function () {
-                return poodle.ImageLocation.create(this.toPath());
+            /** @returns {poodle.ImageUrl} */
+            toImageUrl: function () {
+                return poodle.ImageUrl.create(this.toPath());
             }
         },
         false, false, false

@@ -25,20 +25,20 @@ troop.postpone(poodle, 'ImageEvent', function () {
             init: function (eventName) {
                 base.init.call(this, eventName, poodle.imageEventSpace);
 
-                /** @type {poodle.ImageLocation} */
-                this.imageLocation = undefined;
+                /** @type {poodle.ImageUrl} */
+                this.imageUrl = undefined;
 
                 /** @type {HTMLImageElement} */
                 this.imageElement = undefined;
             },
 
             /**
-             * @param {poodle.ImageLocation} imageLocation
+             * @param {poodle.ImageUrl} imageUrl
              * @returns {poodle.ImageEvent}
              */
-            setImageLocation: function (imageLocation) {
-                dessert.isLocation(imageLocation, "Invalid location");
-                this.imageLocation = imageLocation;
+            setImageLocation: function (imageUrl) {
+                dessert.isLocation(imageUrl, "Invalid location");
+                this.imageUrl = imageUrl;
                 return this;
             },
 
@@ -57,7 +57,7 @@ troop.postpone(poodle, 'ImageEvent', function () {
                 var clone = /** @type {poodle.ImageEvent} */base.clone.call(this, currentPath);
 
                 return clone
-                    .setImageLocation(this.imageLocation)
+                    .setImageLocation(this.imageUrl)
                     .setImageElement(this.imageElement);
             }
         });

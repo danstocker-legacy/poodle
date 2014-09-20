@@ -9,7 +9,7 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
     /**
      * @name poodle.ImageLoader.create
      * @function
-     * @param {poodle.ImageLocation} imageLocation
+     * @param {poodle.ImageUrl} imageUrl
      * @returns {poodle.ImageLoader}
      */
 
@@ -20,7 +20,7 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
      */
     poodle.ImageLoader = self
         .setEventSpace(poodle.imageEventSpace)
-        .addConstants(/** @lends poodle.ImageLocation */{
+        .addConstants(/** @lends poodle.ImageUrl */{
             /** @constant */
             EVENT_IMAGE_LOAD_START: 'image-load-start',
 
@@ -58,18 +58,18 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
         })
         .addMethods(/** @lends poodle.ImageLoader# */{
             /**
-             * @param {poodle.ImageLocation} imageLocation
+             * @param {poodle.ImageUrl} imageUrl
              * @ignore
              */
-            init: function (imageLocation) {
-                dessert.isLocation(imageLocation, "Invalid image location");
+            init: function (imageUrl) {
+                dessert.isLocation(imageUrl, "Invalid image URL");
 
                 evan.Evented.init.call(this);
 
-                /** @type {poodle.ImageLocation} */
-                this.imageLocation = imageLocation;
+                /** @type {poodle.ImageUrl} */
+                this.imageUrl = imageUrl;
 
-                this.setEventPath(imageLocation.eventPath);
+                this.setEventPath(imageUrl.eventPath);
             },
 
             /**
@@ -78,32 +78,32 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
              */
             loadImage: function () {
                 var that = this,
-                    imageLocation = this.imageLocation,
+                    imageUrl = this.imageUrl,
                     eventPath = this.eventPath,
                     imageElement = this._createImageElementProxy(),
                     deferred = $.Deferred();
 
                 this.spawnEvent(this.EVENT_IMAGE_LOAD_START)
-                    .setImageLocation(imageLocation)
+                    .setImageLocation(imageUrl)
                     .setImageElement(imageElement)
                     .triggerSync(eventPath);
 
-                this._loadImage(imageElement, imageLocation.toString())
+                this._loadImage(imageElement, imageUrl.toString())
                     .done(function () {
                         that.spawnEvent(that.EVENT_IMAGE_LOAD_SUCCESS)
-                            .setImageLocation(imageLocation)
+                            .setImageLocation(imageUrl)
                             .setImageElement(imageElement)
                             .triggerSync(eventPath);
 
-                        deferred.resolve(imageLocation, imageElement);
+                        deferred.resolve(imageUrl, imageElement);
                     })
                     .fail(function () {
                         that.spawnEvent(that.EVENT_IMAGE_LOAD_FAILURE)
-                            .setImageLocation(imageLocation)
+                            .setImageLocation(imageUrl)
                             .setImageElement(imageElement)
                             .triggerSync(eventPath);
 
-                        deferred.reject(imageLocation, imageElement);
+                        deferred.reject(imageUrl, imageElement);
                     });
 
                 return deferred.promise();
@@ -111,11 +111,11 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
         });
 }, jQuery);
 
-troop.amendPostponed(poodle, 'ImageLocation', function () {
+troop.amendPostponed(poodle, 'ImageUrl', function () {
     "use strict";
 
-    poodle.ImageLocation
-        .addMethods(/** @lends poodle.ImageLocation */{
+    poodle.ImageUrl
+        .addMethods(/** @lends poodle.ImageUrl */{
             /** @returns {poodle.ImageLoader} */
             toImageLoader: function () {
                 return poodle.ImageLoader.create(this);

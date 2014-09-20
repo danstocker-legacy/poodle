@@ -13,6 +13,10 @@ module.exports = function (grunt) {
             'js/service/Request.js',
             'js/service/ServiceEvent.js',
             'js/service/Service.js',
+            'js/image/imageEventSpace.js',
+            'js/image/ImageUrl.js',
+            'js/image/ImageEvent.js',
+            'js/image/ImageLoader.js',
             'js/exports.js'
         ],
 
