@@ -30,7 +30,7 @@
     });
 
     test("Successful image loading", function () {
-        expect(12);
+        expect(14);
 
         var image = 'foo/bar'.toImageUrl().toImageLoader(),
             imageElement = document.createElement('img'),
@@ -53,6 +53,7 @@
         'foo/bar'.toImageUrl()
             .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_START, function (event) {
                 ok(event.isA(p$.ImageEvent), "should trigger image load start event");
+                equal(event.originalPath.toString(), 'image>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
@@ -60,6 +61,7 @@
             })
             .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_SUCCESS, function (event) {
                 ok(event.isA(p$.ImageEvent), "should trigger image load success event");
+                equal(event.originalPath.toString(), 'image>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
@@ -81,7 +83,7 @@
     });
 
     test("Failed image loading", function () {
-        expect(12);
+        expect(14);
 
         var image = 'foo/bar'.toImageUrl().toImageLoader(),
             imageElement = document.createElement('img'),
@@ -104,6 +106,7 @@
         'foo/bar'.toImageUrl()
             .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_START, function (event) {
                 ok(event.isA(p$.ImageEvent), "should trigger image load start event");
+                equal(event.originalPath.toString(), 'image>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
@@ -111,6 +114,7 @@
             })
             .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_FAILURE, function (event) {
                 ok(event.isA(p$.ImageEvent), "should trigger image load failure event");
+                equal(event.originalPath.toString(), 'image>foo>bar', "should trigger failure event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
