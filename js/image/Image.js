@@ -117,7 +117,7 @@ troop.amendPostponed(poodle, 'ImageUrl', function () {
     poodle.ImageUrl
         .addMethods(/** @lends poodle.ImageUrl */{
             /** @returns {poodle.Image} */
-            toImageLoader: function () {
+            toImage: function () {
                 return poodle.Image.create(this);
             }
         });

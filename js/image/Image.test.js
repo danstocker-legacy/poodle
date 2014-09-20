@@ -23,7 +23,7 @@
 
     test("Conversion from ImageUrl", function () {
         var imageUrl = 'foo/bar'.toImageUrl(),
-            image = imageUrl.toImageLoader();
+            image = imageUrl.toImage();
 
         ok(image.isA(p$.Image), "should return an Image instance");
         strictEqual(image.imageUrl, imageUrl, "should set imageUrl property to self");
@@ -32,7 +32,7 @@
     test("Successful image loading", function () {
         expect(14);
 
-        var image = 'foo/bar'.toImageUrl().toImageLoader(),
+        var image = 'foo/bar'.toImageUrl().toImage(),
             imageElement = document.createElement('img'),
             deferred = $.Deferred();
 
@@ -85,7 +85,7 @@
     test("Failed image loading", function () {
         expect(14);
 
-        var image = 'foo/bar'.toImageUrl().toImageLoader(),
+        var image = 'foo/bar'.toImageUrl().toImage(),
             imageElement = document.createElement('img'),
             deferred = $.Deferred();
 
