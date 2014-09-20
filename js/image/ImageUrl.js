@@ -24,7 +24,7 @@ troop.postpone(poodle, 'ImageUrl', function () {
              * @constant
              * @type {string}
              */
-            EVENT_PATH_ROOT: 'image'
+            EVENT_ROOT_PATH: 'image'
         })
         .addMethods(/** @lends poodle.ImageUrl# */{
             /**
