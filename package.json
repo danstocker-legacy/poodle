@@ -1,9 +1,10 @@
 {
     "name"           : "poodle",
-    "version"        : "0.1.1",
+    "version"        : "0.1.2",
     "description"    : "Service framework",
     "keywords"       : [
-        "service", "transport", "api", "ajax"
+        "service", "transport", "api", "ajax",
+        "image loading"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
     "copyright"      : "Copyright (c) 2014 Dan Stocker",
