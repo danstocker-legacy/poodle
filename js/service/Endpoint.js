@@ -26,13 +26,7 @@ troop.postpone(poodle, 'Endpoint', function () {
              * @constant
              * @type {string}
              */
-            ENDPOINT_EVENT_ROOT_PATH: 'endpoint',
-
-            /**
-             * @constant
-             * @type {RegExp}
-             */
-            LEADING_TRAILING_SLASHES: /(^\/+)|(\/+$)/g
+            ENDPOINT_EVENT_ROOT_PATH: 'endpoint'
         })
         .addMethods(/** @lends poodle.Endpoint# */{
             /**
@@ -51,7 +45,7 @@ troop.postpone(poodle, 'Endpoint', function () {
                 var eventPath = endpointPath.clone()
                     .prependKey(this.ENDPOINT_EVENT_ROOT_PATH);
 
-                // setting event path as self
+                // setting event path for Evented
                 this.setEventPath(eventPath);
             },
 
@@ -103,7 +97,7 @@ troop.amendPostponed(sntls, 'Path', function () {
             /** @returns {poodle.Endpoint} */
             toEndpoint: function () {
                 return poodle.Endpoint.create(this
-                    .replace(poodle.Endpoint.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
+                    .replace(poodle.UrlUtils.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
             }
