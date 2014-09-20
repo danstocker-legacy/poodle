@@ -32,7 +32,7 @@ troop.postpone(poodle, 'ImageUrl', function () {
              * @returns {jQuery.Promise}
              */
             loadImage: function () {
-                return poodle.Image.loadImage(this);
+                return poodle.Image.create(this).loadImage();
             }
         });
 });

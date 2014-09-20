@@ -32,4 +32,22 @@
         strictEqual(imageUrl.locationPath, locationPath,
             "should set locationPath to the one that was converted");
     });
+
+    test("Image loading", function () {
+        expect(2);
+
+        var imageUrl = 'foo/bar'.toImageUrl(),
+            promise = {};
+
+        p$.Image.addMocks({
+            loadImage: function () {
+                strictEqual(this.imageUrl, imageUrl, "should load image for specified URL");
+                return promise;
+            }
+        });
+
+        strictEqual(imageUrl.loadImage(), promise, "should return promise from Image.loadImage");
+
+        p$.Image.removeMocks();
+    });
 }());
