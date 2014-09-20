@@ -40,7 +40,7 @@ troop.postpone(poodle, 'Request', function () {
              */
             init: function (endpoint, params) {
                 dessert
-                    .isEndpoint(endpoint, "Invalid endpoint")
+                    .isLocation(endpoint, "Invalid endpoint")
                     .isObjectOptional(params, "Invalid parameters");
 
                 /** @type {poodle.Endpoint} */

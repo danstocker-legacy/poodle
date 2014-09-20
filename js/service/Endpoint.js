@@ -2,9 +2,8 @@
 troop.postpone(poodle, 'Endpoint', function () {
     "use strict";
 
-    var base = troop.Base,
-        self = base.extend()
-            .addTraitAndExtend(evan.Evented);
+    var base = poodle.Location,
+        self = base.extend();
 
     /**
      * Creates an Endpoint instance.
@@ -16,8 +15,7 @@ troop.postpone(poodle, 'Endpoint', function () {
 
     /**
      * @class
-     * @extends troop.Base
-     * @extends evan.Evented
+     * @extends poodle.Location
      */
     poodle.Endpoint = self
         .setEventSpace(poodle.serviceEventSpace)
@@ -26,43 +24,7 @@ troop.postpone(poodle, 'Endpoint', function () {
              * @constant
              * @type {string}
              */
-            ENDPOINT_EVENT_ROOT_PATH: 'endpoint'
-        })
-        .addMethods(/** @lends poodle.Endpoint# */{
-            /**
-             * @param {sntls.Path} endpointPath
-             * @ignore
-             */
-            init: function (endpointPath) {
-                dessert.isPath(endpointPath, "Invalid endpoint path");
-
-                /**
-                 * Path associated with endpoint.
-                 * @type {sntls.Path}
-                 */
-                this.endpointPath = endpointPath;
-
-                var eventPath = endpointPath.clone()
-                    .prependKey(this.ENDPOINT_EVENT_ROOT_PATH);
-
-                // setting event path for Evented
-                this.setEventPath(eventPath);
-            },
-
-            /**
-             * Tells if the specified endpoint is equivalent to the current one.
-             * @param {poodle.Endpoint} endpoint
-             * @returns {boolean}
-             */
-            equals: function (endpoint) {
-                dessert.isEndpointOptional(endpoint, "Invalid endpoint");
-                return endpoint && this.endpointPath.equals(endpoint.endpointPath);
-            },
-
-            /** @returns {string} */
-            toString: function () {
-                return this.endpointPath.asArray.join('/');
-            }
+            EVENT_ROOT_PATH: 'endpoint'
         });
 });
 
@@ -80,24 +42,13 @@ troop.amendPostponed(sntls, 'Path', function () {
 (function () {
     "use strict";
 
-    dessert.addTypes(/** @lends dessert */{
-        isEndpoint: function (expr) {
-            return poodle.Endpoint.isBaseOf(expr);
-        },
-
-        isEndpointOptional: function (expr) {
-            return typeof expr === 'undefined' ||
-                poodle.Endpoint.isBaseOf(expr);
-        }
-    });
-
     troop.Properties.addProperties.call(
         String.prototype,
         /** @lends String# */{
             /** @returns {poodle.Endpoint} */
             toEndpoint: function () {
                 return poodle.Endpoint.create(this
-                    .replace(poodle.UrlUtils.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
+                    .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
             }
