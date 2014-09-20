@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             'js/image/imageEventSpace.js',
             'js/image/ImageUrl.js',
             'js/image/ImageEvent.js',
-            'js/image/ImageLoader.js',
+            'js/image/Image.js',
             'js/exports.js'
         ],
 

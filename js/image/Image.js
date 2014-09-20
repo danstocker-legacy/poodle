@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, evan, jQuery, poodle */
-troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
+troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
     "use strict";
 
     var base = troop.Base,
@@ -7,10 +7,10 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
             .addTrait(evan.Evented);
 
     /**
-     * @name poodle.ImageLoader.create
+     * @name poodle.Image.create
      * @function
      * @param {poodle.ImageUrl} imageUrl
-     * @returns {poodle.ImageLoader}
+     * @returns {poodle.Image}
      */
 
     /**
@@ -18,7 +18,7 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
      * @extends troop.Base
      * @extends evan.Evented
      */
-    poodle.ImageLoader = self
+    poodle.Image = self
         .setEventSpace(poodle.imageEventSpace)
         .addConstants(/** @lends poodle.ImageUrl */{
             /** @constant */
@@ -30,7 +30,7 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
             /** @constant */
             EVENT_IMAGE_LOAD_FAILURE: 'image-load-failure'
         })
-        .addPrivateMethods(/** @lends poodle.ImageLoader# */{
+        .addPrivateMethods(/** @lends poodle.Image# */{
             /**
              * @returns {HTMLImageElement}
              * @private
@@ -56,7 +56,7 @@ troop.postpone(poodle, 'ImageLoader', function (ns, className, /**jQuery*/$) {
                 return deferred.promise();
             }
         })
-        .addMethods(/** @lends poodle.ImageLoader# */{
+        .addMethods(/** @lends poodle.Image# */{
             /**
              * @param {poodle.ImageUrl} imageUrl
              * @ignore
@@ -116,9 +116,9 @@ troop.amendPostponed(poodle, 'ImageUrl', function () {
 
     poodle.ImageUrl
         .addMethods(/** @lends poodle.ImageUrl */{
-            /** @returns {poodle.ImageLoader} */
+            /** @returns {poodle.Image} */
             toImageLoader: function () {
-                return poodle.ImageLoader.create(this);
+                return poodle.Image.create(this);
             }
         });
 });
