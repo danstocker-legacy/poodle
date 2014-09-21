@@ -59,7 +59,10 @@ troop.postpone(poodle, 'Location', function () {
              * @returns {boolean}
              */
             equals: function (location) {
-                dessert.isLocationOptional(location, "Invalid location");
+                dessert
+                    .isLocationOptional(location, "Invalid location")
+                    .assert(!location || this.getBase() === location.getBase(), "Invalid kind of location");
+
                 return location && this.locationPath.equals(location.locationPath);
             },
 

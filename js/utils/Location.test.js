@@ -35,6 +35,12 @@
             p$.Location.create('foo/bar'.toPath()).equals('foo');
         }, "should raise exception on invalid argument");
 
+        var MyLocation = p$.Location.extend();
+
+        raises(function () {
+            p$.Location.create('foo/bar'.toPath()).equals(MyLocation.create());
+        }, "should raise exception on base mismatch");
+
         ok(!p$.Location.create('foo/bar'.toPath()).equals(undefined),
             "should return false for no argument");
         ok(!p$.Location.create('foo/bar'.toPath()).equals(p$.Location.create('hello/world'.toPath())),
