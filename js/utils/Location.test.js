@@ -53,4 +53,14 @@
         var location = p$.Location.create('foo/bar'.toPath());
         equal(location.toString(), 'foo/bar', "should return location in slash notation");
     });
+
+    test("Subclass conversion to string", function () {
+        var MyLocation = p$.Location.extend()
+                .addConstants({
+                    LOCATION_ROOT_PATH: 'baz'
+                }),
+            location = MyLocation.create('foo/bar'.toPath());
+
+        equal(location.toString(), 'baz/foo/bar', "should return location with root in slash notation");
+    });
 }());

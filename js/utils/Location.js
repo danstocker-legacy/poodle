@@ -28,6 +28,12 @@ troop.postpone(poodle, 'Location', function () {
 
             /**
              * @constant
+             * @type {string}
+             */
+            LOCATION_ROOT_PATH: undefined,
+
+            /**
+             * @constant
              * @type {RegExp}
              */
             LEADING_TRAILING_SLASHES: /(^\/+)|(\/+$)/g
@@ -68,7 +74,14 @@ troop.postpone(poodle, 'Location', function () {
 
             /** @returns {string} */
             toString: function () {
-                return this.locationPath.asArray.join('/');
+                var LOCATION_ROOT_PATH = this.LOCATION_ROOT_PATH,
+                    asArray = this.locationPath.asArray;
+
+                asArray = LOCATION_ROOT_PATH ?
+                    [LOCATION_ROOT_PATH].concat(asArray) :
+                    asArray;
+
+                return asArray.join('/');
             }
         });
 });
