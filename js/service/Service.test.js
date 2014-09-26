@@ -34,11 +34,15 @@
     });
 
     test("Calling service", function () {
-        expect(5);
+        expect(6);
 
         var request = 'foo/bar'.toRequest(),
             service = request.toService(),
             promise = $.Deferred().promise();
+
+        raises(function () {
+            service.callService('foo');
+        }, "should raise exception on invalid custom ajax options");
 
         service.addMocks({
             _ajaxProxy: function (options) {
@@ -72,6 +76,65 @@
         strictEqual(service.callService(), promise, "should return promise from ajax call");
 
         p$.Service.promiseRegistry.removeMocks();
+    });
+
+    test("Calling service with custom options", function () {
+        expect(1);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService();
+
+        service.addMocks({
+            _ajaxProxy: function (options) {
+                deepEqual(
+                    options,
+                    {
+                        dataType: "json",
+                        type    : 'GET',
+                        url     : 'foo/bar'.toEndpoint().toString(),
+                        headers : {},
+                        data    : {},
+                        timeout : this.SERVICE_TIMEOUT,
+                        async   : false
+                    },
+                    "should call jQuery ajax with correct options"
+                );
+                return $.Deferred().promise();
+            }
+        });
+
+        service.callService({
+            async: false
+        });
+    });
+
+    test("Calling service with custom override options", function () {
+        expect(1);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService();
+
+        service.addMocks({
+            _ajaxProxy: function (options) {
+                deepEqual(
+                    options,
+                    {
+                        dataType: "json",
+                        type    : 'GET',
+                        url     : 'foo/bar'.toEndpoint().toString(),
+                        headers : {},
+                        data    : {},
+                        timeout : 0
+                    },
+                    "should call jQuery ajax with correct options"
+                );
+                return $.Deferred().promise();
+            }
+        });
+
+        service.callService({
+            timeout: 0
+        });
     });
 
     test("Successful service call", function () {

@@ -111,22 +111,33 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 return this._triggerEvents($.Deferred().reject(null, null, errorThrown));
             },
 
-            /** @returns {jQuery.Promise} */
-            callService: function () {
+            /**
+             * @param {object} [ajaxOptions] Custom options for jQuery ajax. In case of conflict, custom option overrides
+             * default.
+             * @returns {jQuery.Promise}
+             */
+            callService: function (ajaxOptions) {
+                dessert.isObjectOptional(ajaxOptions, "Invalid ajax options");
+
                 var that = this,
                     request = this.request,
                     requestId = request.toString(),
                     promise = this.promiseRegistry.getItem(requestId);
 
-                if (!promise) {
-                    promise = this._ajaxProxy({
+                // merging default ajax options with specified custom options
+                ajaxOptions = sntls.Collection.create(ajaxOptions)
+                    .mergeWith(sntls.Collection.create({
                         dataType: "json",
                         type    : request.httpMethod,
                         url     : request.endpoint.toString(),
                         headers : request.headers.items,
                         data    : request.params.items,
                         timeout : this.SERVICE_TIMEOUT
-                    });
+                    }))
+                    .items;
+
+                if (!promise) {
+                    promise = this._ajaxProxy(ajaxOptions);
 
                     // storing promise in registry
                     this.promiseRegistry.setItem(requestId, promise);
