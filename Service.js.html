@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: service/Service.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: service/Service.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/*global dessert, troop, sntls, evan, jQuery, poodle */
+troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
+    "use strict";
+
+    var base = troop.Base,
+        self = base.extend()
+            .addTrait(evan.Evented);
+
+    /**
+     * Creates a Service instance.
+     * @name poodle.Service.create
+     * @function
+     * @param {poodle.Request} request
+     * @returns {poodle.Service}
+     */
+
+    /**
+     * The Service class represents a service associated with a specific request.
+     * Implements an API to call the service in online or offline, asynchronous or synchronous modes.
+     * Triggers events upon start, success, and failure of service calls.
+     * @class
+     * @extends troop.Base
+     * @extends evan.Evented
+     */
+    poodle.Service = self
+        .setEventSpace(poodle.serviceEventSpace)
+        .addConstants(/** @lends poodle.Service */{
+            /**
+             * Signals the start of a service call.
+             * @constant
+             */
+            EVENT_SERVICE_START: 'service-start',
+
+            /**
+             * Signals the successful return of a service call.
+             * @constant
+             */
+            EVENT_SERVICE_SUCCESS: 'service-success',
+
+            /**
+             * Signals a failed service call. The reason for failure is included in the event.
+             * @constant
+             */
+            EVENT_SERVICE_FAILURE: 'service-failure',
+
+            /**
+             * Default timeout for service calls in [ms].
+             * @constant
+             */
+            SERVICE_TIMEOUT: 30000,
+
+            /**
+             * Registry of service calls that are in progress. Subsequent attempts to call identical services do not
+             * dispatch actual ajax requests, but return the promise for the one in progress.
+             * @type {sntls.Collection}
+             * @constant
+             */
+            promiseRegistry: sntls.Collection.create()
+        })
+        .addPrivateMethods(/** @lends poodle.Service# */{
+            /**
+             * @param {object} ajaxOptions
+             * @returns {jQuery.Promise}
+             * @private
+             */
+            _ajaxProxy: function (ajaxOptions) {
+                return $.ajax(ajaxOptions);
+            },
+
+            /**
+             * Triggers service related events (start - success/failure).
+             * @param {jQuery.Promise} ajaxPromise
+             * @private
+             */
+            _triggerEvents: function (ajaxPromise) {
+                var that = this,
+                    request = this.request,
+                    eventPath = this.eventPath;
+
+                // sending notification about starting the service
+                this.triggerSync(this.EVENT_SERVICE_START, request);
+
+                // adding handlers
+                ajaxPromise
+                    .done(function (responseNode, textStatus, jqXHR) {
+                        that.spawnEvent(that.EVENT_SERVICE_SUCCESS)
+                            .setRequest(request)
+                            .setResponseNode(responseNode)
+                            .setJqXhr(jqXHR)
+                            .triggerSync(eventPath);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        that.spawnEvent(that.EVENT_SERVICE_FAILURE)
+                            .setRequest(request)
+                            .setResponseNode(errorThrown)
+                            .setJqXhr(jqXHR)
+                            .triggerSync(eventPath);
+                    });
+            }
+        })
+        .addMethods(/** @lends poodle.Service# */{
+            /**
+             * @param {poodle.Request} request
+             * @ignore
+             */
+            init: function (request) {
+                dessert.isRequest(request, "Invalid request");
+
+                evan.Evented.init.call(this);
+
+                /** @type {poodle.Request} */
+                this.request = request;
+
+                // setting event path to endpoint's event path
+                this.setEventPath(request.endpoint.eventPath);
+            },
+
+            /**
+             * Calls service in offline mode, that will return with success, carrying the specified response body.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
+             * @example
+             * service.callOfflineServiceWithSuccess({foo: 'bar'});
+             * @param {*} responseNode Response body to be returned.
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithSuccess: function (responseNode) {
+                return this._triggerEvents($.Deferred().resolve(responseNode, null, null));
+            },
+
+            /**
+             * Calls service in offline mode, that will return with failure, carrying the specified error value.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
+             * @param {*} errorThrown Error value to be returned.
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithFailure: function (errorThrown) {
+                return this._triggerEvents($.Deferred().reject(null, null, errorThrown));
+            },
+
+            /**
+             * Calls service in online mode, dispatching an ajax request in the end. No ajax request will be made
+             * if an identical service call is currently in progress.
+             * @param {object} [ajaxOptions] Custom options for jQuery ajax.
+             * In case of conflict, custom option overrides default.
+             * @returns {jQuery.Promise}
+             */
+            callService: function (ajaxOptions) {
+                dessert.isObjectOptional(ajaxOptions, "Invalid ajax options");
+
+                var that = this,
+                    request = this.request,
+                    requestId = request.toString(),
+                    promise = this.promiseRegistry.getItem(requestId);
+
+                // merging default ajax options with specified custom options
+                ajaxOptions = sntls.Collection.create(ajaxOptions)
+                    .mergeWith(sntls.Collection.create({
+                        dataType: "json",
+                        type    : request.httpMethod,
+                        url     : request.endpoint.toString(),
+                        headers : request.headers.items,
+                        data    : request.params.items,
+                        timeout : this.SERVICE_TIMEOUT
+                    }))
+                    .items;
+
+                if (!promise) {
+                    promise = this._ajaxProxy(ajaxOptions);
+
+                    // storing promise in registry
+                    this.promiseRegistry.setItem(requestId, promise);
+
+                    // calling service and
+                    this._triggerEvents(promise);
+
+                    promise.always(function () {
+                        // removing promise from registry
+                        that.promiseRegistry.deleteItem(requestId);
+                    });
+                }
+
+                return promise;
+            },
+
+            /**
+             * Calls service synchronously. Overrides `async` option passed in `ajaxOptions`.
+             * @example
+             * // loading static JSON file
+             * 'files/data.json'.toRequest().toService().callServiceSync();
+             * @param {object} [ajaxOptions] Custom options for jQuery ajax.
+             * @returns {jQuery.Promise}
+             */
+            callServiceSync: function (ajaxOptions) {
+                ajaxOptions = sntls.Collection.create({async: false})
+                    .mergeWith(sntls.Collection.create(ajaxOptions))
+                    .items;
+
+                return this.callService(ajaxOptions);
+            }
+        });
+}, jQuery);
+
+troop.amendPostponed(poodle, 'Request', function () {
+    "use strict";
+
+    poodle.Request
+        .addMethods(/** @lends poodle.Request */{
+            /** @returns {poodle.Service} */
+            toService: function () {
+                return poodle.Service.create(this);
+            }
+        });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="poodle.html">poodle</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 27 2014 12:50:27 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

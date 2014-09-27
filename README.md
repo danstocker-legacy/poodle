@@ -1,4 +1,0 @@
-Poodle
-======
-
-*Service framework*
