@@ -7,6 +7,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             .addTrait(evan.Evented);
 
     /**
+     * Creates a Service instance.
      * @name poodle.Service.create
      * @function
      * @param {poodle.Request} request
@@ -14,6 +15,9 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
      */
 
     /**
+     * The Service class represents a service associated with a specific request.
+     * Implements an API to call the service in online or offline, asynchronous or synchronous modes.
+     * Triggers events upon start, success, and failure of service calls.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -21,19 +25,33 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
     poodle.Service = self
         .setEventSpace(poodle.serviceEventSpace)
         .addConstants(/** @lends poodle.Service */{
-            /** @constant */
+            /**
+             * Signals the start of a service call.
+             * @constant
+             */
             EVENT_SERVICE_START: 'service-start',
 
-            /** @constant */
+            /**
+             * Signals the successful return of a service call.
+             * @constant
+             */
             EVENT_SERVICE_SUCCESS: 'service-success',
 
-            /** @constant */
+            /**
+             * Signals a failed service call. The reason for failure is included in the event.
+             * @constant
+             */
             EVENT_SERVICE_FAILURE: 'service-failure',
 
-            /** @constant */
+            /**
+             * Default timeout for service calls in [ms].
+             * @constant
+             */
             SERVICE_TIMEOUT: 30000,
 
             /**
+             * Registry of service calls that are in progress. Subsequent attempts to call identical services do not
+             * dispatch actual ajax requests, but return the promise for the one in progress.
              * @type {sntls.Collection}
              * @constant
              */
@@ -92,11 +110,16 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 /** @type {poodle.Request} */
                 this.request = request;
 
+                // setting event path to endpoint's event path
                 this.setEventPath(request.endpoint.eventPath);
             },
 
             /**
-             * @param {*} responseNode
+             * Calls service in offline mode, that will return with success, carrying the specified response body.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
+             * @example
+             * service.callOfflineServiceWithSuccess({foo: 'bar'});
+             * @param {*} responseNode Response body to be returned.
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithSuccess: function (responseNode) {
@@ -104,6 +127,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             },
 
             /**
+             * Calls service in offline mode, that will return with failure, carrying the specified error value.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
              * @param {*} errorThrown
              * @returns {jQuery.Promise}
              */
@@ -112,8 +137,10 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             },
 
             /**
-             * @param {object} [ajaxOptions] Custom options for jQuery ajax. In case of conflict, custom option overrides
-             * default.
+             * Calls service in online mode, dispatching an ajax request in the end. No ajax request will be made
+             * if an identical service call is currently in progress.
+             * @param {object} [ajaxOptions] Custom options for jQuery ajax.
+             * In case of conflict, custom option overrides default.
              * @returns {jQuery.Promise}
              */
             callService: function (ajaxOptions) {
@@ -152,6 +179,22 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 }
 
                 return promise;
+            },
+
+            /**
+             * Calls service synchronously. Overrides `async` option passed in `ajaxOptions`.
+             * @example
+             * // loading static JSON file
+             * 'files/data.json'.toRequest().toService().callServiceSync();
+             * @param {object} [ajaxOptions]
+             * @returns {jQuery.Promise}
+             */
+            callServiceSync: function (ajaxOptions) {
+                ajaxOptions = sntls.Collection.create({async: false})
+                    .mergeWith(sntls.Collection.create(ajaxOptions))
+                    .items;
+
+                return this.callService(ajaxOptions);
             }
         });
 }, jQuery);

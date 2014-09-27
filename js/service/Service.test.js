@@ -218,6 +218,36 @@
         p$.Service.promiseRegistry.removeMocks();
     });
 
+    test("Synchronous service call", function () {
+        expect(2);
+
+        var service = 'foo/bar'.toRequest().toService(),
+            promise = {};
+
+        service.addMocks({
+            callService: function (ajaxOptions) {
+                deepEqual(ajaxOptions, {async: false, foo: 'bar'}, "should add async:false to custom ajax options");
+                return promise;
+            }
+        });
+
+        strictEqual(service.callServiceSync({foo: 'bar'}), promise, "should return promise from .callService");
+    });
+
+    test("Synchronous service call with conflict", function () {
+        expect(1);
+
+        var service = 'foo/bar'.toRequest().toService();
+
+        service.addMocks({
+            callService: function (ajaxOptions) {
+                deepEqual(ajaxOptions, {async: false}, "should override async ajax option");
+            }
+        });
+
+        service.callServiceSync({async: 'foo'});
+    });
+
     test("Successful offline service call", function () {
         expect(4);
 
