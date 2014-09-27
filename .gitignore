@@ -1,4 +1,5 @@
 /out/
+/doc/
 /.idea/
 /node_modules/
 poodle.js
