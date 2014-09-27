@@ -68,6 +68,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             },
 
             /**
+             * Triggers service related events (start - success/failure).
              * @param {jQuery.Promise} ajaxPromise
              * @private
              */
@@ -129,7 +130,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             /**
              * Calls service in offline mode, that will return with failure, carrying the specified error value.
              * Offline service calls behave exactly like online calls except they don't make any ajax requests.
-             * @param {*} errorThrown
+             * @param {*} errorThrown Error value to be returned.
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithFailure: function (errorThrown) {
@@ -186,7 +187,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @example
              * // loading static JSON file
              * 'files/data.json'.toRequest().toService().callServiceSync();
-             * @param {object} [ajaxOptions]
+             * @param {object} [ajaxOptions] Custom options for jQuery ajax.
              * @returns {jQuery.Promise}
              */
             callServiceSync: function (ajaxOptions) {
