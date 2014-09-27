@@ -13,6 +13,9 @@ troop.postpone(poodle, 'ServiceEvent', function () {
      */
 
     /**
+     * The ServiceEvent class represents an event that relates to services. Offers an API to access the internals
+     * of relevant properties, eg. the response node of the service that triggered the event.
+     * Service events are usually triggered at different stages of a service call.
      * @class
      * @extends evan.Event
      */
@@ -25,17 +28,27 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             init: function (eventName) {
                 base.init.call(this, eventName, poodle.serviceEventSpace);
 
-                /** @type {poodle.Request} */
+                /**
+                 * Request associated with the event.
+                 * @type {poodle.Request}
+                 */
                 this.request = undefined;
 
-                /** @type {*} */
+                /**
+                 * Custom data associated with the event.
+                 * @type {*}
+                 */
                 this.responseNode = undefined;
 
-                /** @type {jQuery.jqXHR} */
+                /**
+                 * jQuery XHR object associated with the event.
+                 * @type {jQuery.jqXHR}
+                 */
                 this.jqXhr = undefined;
             },
 
             /**
+             * Sets request property.
              * @param {poodle.Request} request
              * @returns {poodle.ServiceEvent}
              */
@@ -46,6 +59,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Fetches the value of the specified request parameter.
              * @param {string} paramName
              * @returns {string}
              */
@@ -56,6 +70,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Sets the response data node property.
              * @param {*} responseNode
              * @returns {poodle.ServiceEvent}
              */
@@ -65,7 +80,12 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
-             * @param {sntls.Path} [path]
+             * Fetches a data node from inside the response node at the specified path.
+             * Treats the response node as a `Tree` instance.
+             * @example
+             * var node = event.getResponseNode('foo>bar'.toPath());
+             * @param {sntls.Path} [path] Path pointing to the node to be fetched. When absent,
+             * the entire `responseNode` will be returned.
              * @returns {*}
              */
             getResponseNode: function (path) {
@@ -76,8 +96,11 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
-             * @param {sntls.Path} [path]
+             * Fetches data node from the response node, wrapped in a `Hash` instance.
+             * @param {sntls.Path} [path] Path pointing to the node to be fetched. When absent,
+             * the entire `responseNode` will be returned.
              * @returns {sntls.Hash}
+             * @see poodle.ServiceEvent#getResponseNode
              */
             getResponseNodeAsHash: function (path) {
                 dessert.isPathOptional(path, "Invalid path");
@@ -87,6 +110,12 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Fetches the value of the specified response field. Equivalent to `.getResponseNode()` called
+             * with a primitive path.
+             * @example
+             * var field = event.getResponseField('foo');
+             * // equivalent to:
+             * var node = event.getResponseNode('foo'.toPath());
              * @param {string} fieldName
              * @returns {*}
              */
@@ -99,6 +128,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Sets jQuery XHR property.
              * @param {jQuery.jqXHR} jqXhr
              * @returns {poodle.ServiceEvent}
              */
@@ -108,8 +138,11 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Clones event. In addition to `evan.Event.clone()`, also copies service-specific properties
+             * (by reference).
              * @param {sntls.Path} [currentPath]
              * @returns {poodle.ServiceEvent}
+             * @see evan.Event#clone
              */
             clone: function (currentPath) {
                 var clone = /** @type {poodle.ServiceEvent} */base.clone.call(this, currentPath);
