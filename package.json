@@ -1,6 +1,6 @@
 {
     "name"           : "poodle",
-    "version"        : "0.1.4",
+    "version": "0.1.5",
     "description"    : "Transport framework",
     "keywords"       : [
         "service", "transport", "api", "ajax",
@@ -9,6 +9,10 @@
     "author"         : "Dan Stocker <dan@kwaia.com>",
     "copyright"      : "Copyright (c) 2014 Dan Stocker",
     "license"        : "MIT",
+    "repository": {
+        "type": "git",
+        "url" : "https://github.com/danstocker/poodle.git"
+    },
     "dependencies"   : {
         "dessert": "~0.3.2",
         "troop"  : "~0.7.2",
