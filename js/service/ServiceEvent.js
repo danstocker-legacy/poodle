@@ -6,6 +6,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
         self = base.extend();
 
     /**
+     * Creates a ServiceEvent instance.
      * @name poodle.ServiceEvent.create
      * @function
      * @param {string} eventName Event name
@@ -138,7 +139,7 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
-             * Clones event. In addition to `evan.Event.clone()`, also copies service-specific properties
+             * Clones event instance. In addition to `evan.Event.clone()`, also copies service-specific properties
              * (by reference).
              * @param {sntls.Path} [currentPath]
              * @returns {poodle.ServiceEvent}

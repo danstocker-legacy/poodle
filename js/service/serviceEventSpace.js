@@ -3,7 +3,7 @@ troop.postpone(poodle, 'serviceEventSpace', function () {
     "use strict";
 
     /**
-     * Dedicated event space for service events.
+     * Event space for service related events.
      * @type {evan.EventSpace}
      */
     poodle.serviceEventSpace = evan.EventSpace.create();

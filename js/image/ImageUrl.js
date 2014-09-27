@@ -6,6 +6,7 @@ troop.postpone(poodle, 'ImageUrl', function () {
         self = base.extend();
 
     /**
+     * Creates an ImageUrl instance.
      * @name poodle.ImageUrl.create
      * @function
      * @param {sntls.Path} imagePath
@@ -13,6 +14,7 @@ troop.postpone(poodle, 'ImageUrl', function () {
      */
 
     /**
+     * The ImageUrl is a Location that allows dynamic loading of images via DOM image element.
      * @class
      * @extends poodle.Location
      */
@@ -41,7 +43,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     "use strict";
 
     sntls.Path.addMethods(/** @lends sntls.Path# */{
-        /** @returns {poodle.ImageUrl} */
+        /**
+         * Converts `Path` to `ImageUrl`.
+         * @returns {poodle.ImageUrl}
+         */
         toImageUrl: function () {
             return poodle.ImageUrl.create(this);
         }
@@ -54,7 +59,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         String.prototype,
         /** @lends String# */{
-            /** @returns {poodle.ImageUrl} */
+            /**
+             * Converts `String` to `ImageUrl`.
+             * @returns {poodle.ImageUrl}
+             */
             toImageUrl: function () {
                 return poodle.ImageUrl.create(this
                     .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
@@ -68,7 +76,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         Array.prototype,
         /** @lends Array# */{
-            /** @returns {poodle.ImageUrl} */
+            /**
+             * Converts `Array` to `ImageUrl`.
+             * @returns {poodle.ImageUrl}
+             */
             toImageUrl: function () {
                 return poodle.ImageUrl.create(this.toPath());
             }

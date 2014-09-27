@@ -7,13 +7,16 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
             .addTrait(evan.Evented);
 
     /**
+     * Creates an Image instance.
      * @name poodle.Image.create
      * @function
-     * @param {poodle.ImageUrl} imageUrl
+     * @param {poodle.ImageUrl} imageUrl Location of image.
      * @returns {poodle.Image}
      */
 
     /**
+     * The Image class represents an image file, and manages its dynamic loading via a DOM element.
+     * Triggers events upon start, success, and failure of loading an image.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -21,13 +24,22 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
     poodle.Image = self
         .setEventSpace(poodle.imageEventSpace)
         .addConstants(/** @lends poodle.ImageUrl */{
-            /** @constant */
+            /**
+             * Signals that image started loading.
+             * @constant
+             */
             EVENT_IMAGE_LOAD_START: 'image-load-start',
 
-            /** @constant */
+            /**
+             * Signals that image has finished loading.
+             * @constant
+             */
             EVENT_IMAGE_LOAD_SUCCESS: 'image-load-success',
 
-            /** @constant */
+            /**
+             * Signals that image failed to load.
+             * @constant
+             */
             EVENT_IMAGE_LOAD_FAILURE: 'image-load-failure'
         })
         .addPrivateMethods(/** @lends poodle.Image# */{
@@ -40,8 +52,9 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
             },
 
             /**
-             * @param imageElement
-             * @param srcAttribute
+             * Applies the specified src attribute to the specified image DOM element, and subscribes to its events.
+             * @param {HTMLImageElement} imageElement
+             * @param {string} srcAttribute
              * @returns {jQuery.Promise}
              * @private
              */
@@ -73,7 +86,7 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
             },
 
             /**
-             * Loads image dynamically.
+             * Loads image dynamically. Triggers appropriate events at each stage of the loading process.
              * @returns {jQuery.Promise}
              */
             loadImage: function () {
@@ -116,7 +129,10 @@ troop.amendPostponed(poodle, 'ImageUrl', function () {
 
     poodle.ImageUrl
         .addMethods(/** @lends poodle.ImageUrl */{
-            /** @returns {poodle.Image} */
+            /**
+             * Converts `ImageUrl` to `Image`.
+             * @returns {poodle.Image}
+             */
             toImage: function () {
                 return poodle.Image.create(this);
             }

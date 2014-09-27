@@ -2,6 +2,9 @@
 troop.postpone(poodle, 'imageEventSpace', function () {
     "use strict";
 
-    /** @type {evan.EventSpace} */
+    /**
+     * Event space for image related events.
+     * @type {evan.EventSpace}
+     */
     poodle.imageEventSpace = evan.EventSpace.create();
 });

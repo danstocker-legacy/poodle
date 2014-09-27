@@ -6,6 +6,7 @@ troop.postpone(poodle, 'ImageEvent', function () {
         self = base.extend();
 
     /**
+     * Creates an ImageEvent instance.
      * @name poodle.ImageEvent.create
      * @function
      * @param {string} eventName Event name
@@ -13,6 +14,9 @@ troop.postpone(poodle, 'ImageEvent', function () {
      */
 
     /**
+     * The ImageEvent class pertains to dynamic loading of images. The purpose of such events is to carry information
+     * about the image being / having been loaded.
+     * Image events are usually triggered at various stages of the loading process.
      * @class
      * @extends evan.Event
      */
@@ -25,14 +29,21 @@ troop.postpone(poodle, 'ImageEvent', function () {
             init: function (eventName) {
                 base.init.call(this, eventName, poodle.imageEventSpace);
 
-                /** @type {poodle.ImageUrl} */
+                /**
+                 * Location of image associated with event.
+                 * @type {poodle.ImageUrl}
+                 */
                 this.imageUrl = undefined;
 
-                /** @type {HTMLImageElement} */
+                /**
+                 * Image DOM element associated with event.
+                 * @type {HTMLImageElement}
+                 */
                 this.imageElement = undefined;
             },
 
             /**
+             * Sets image location property.
              * @param {poodle.ImageUrl} imageUrl
              * @returns {poodle.ImageEvent}
              */
@@ -42,7 +53,10 @@ troop.postpone(poodle, 'ImageEvent', function () {
                 return this;
             },
 
-            /** @param {HTMLImageElement} imageElement */
+            /**
+             * Sets image DOM element property.
+             * @param {HTMLImageElement} imageElement
+             */
             setImageElement: function (imageElement) {
                 dessert.isImageElement(imageElement, "Invalid image element");
                 this.imageElement = imageElement;
@@ -50,6 +64,8 @@ troop.postpone(poodle, 'ImageEvent', function () {
             },
 
             /**
+             * Clones event instance. In addition to `evan.Event.clone()`, also copies image-specific properties
+             * (by reference).
              * @param {sntls.Path} [currentPath]
              * @returns {poodle.ImageEvent}
              */
