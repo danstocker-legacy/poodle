@@ -14,6 +14,7 @@ troop.postpone(poodle, 'Endpoint', function () {
      */
 
     /**
+     * The Endpoint is a Location that represents a service endpoint.
      * @class
      * @extends poodle.Location
      */
@@ -21,6 +22,7 @@ troop.postpone(poodle, 'Endpoint', function () {
         .setEventSpace(poodle.serviceEventSpace)
         .addConstants(/** @lends poodle.Endpoint */{
             /**
+             * Event root path specifically for endpoints.
              * @constant
              * @type {string}
              */
@@ -32,7 +34,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     "use strict";
 
     sntls.Path.addMethods(/** @lends sntls.Path# */{
-        /** @returns {poodle.Endpoint} */
+        /**
+         * Converts `Path` instance to `Endpoint`
+         * @returns {poodle.Endpoint}
+         */
         toEndpoint: function () {
             return poodle.Endpoint.create(this);
         }
@@ -45,7 +50,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         String.prototype,
         /** @lends String# */{
-            /** @returns {poodle.Endpoint} */
+            /**
+             * Converts `String` to `Endpoint`
+             * @returns {poodle.Endpoint}
+             */
             toEndpoint: function () {
                 return poodle.Endpoint.create(this
                     .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
@@ -59,7 +67,10 @@ troop.amendPostponed(sntls, 'Path', function () {
     troop.Properties.addProperties.call(
         Array.prototype,
         /** @lends Array# */{
-            /** @returns {poodle.Endpoint} */
+            /**
+             * Converts `Array` to `Endpoint`
+             * @returns {poodle.Endpoint}
+             */
             toEndpoint: function () {
                 return poodle.Endpoint.create(this.toPath());
             }

@@ -7,13 +7,17 @@ troop.postpone(poodle, 'Location', function () {
             .addTraitAndExtend(evan.Evented);
 
     /**
+     * Creates a Location instance.
+     * Do not instantiate Location directly unless there are a surrogate rules set up.
      * @name poodle.Location.create
      * @function
-     * @param {sntls.Path} path
+     * @param {sntls.Path} locationPath Path that represents the endpoints.
      * @returns {poodle.Location}
      */
 
     /**
+     * The Location is an abstract base class for URLs on which events can be triggered on and listened to.
+     * Extend Location to add event space, or set specific root path as needed.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -21,6 +25,8 @@ troop.postpone(poodle, 'Location', function () {
     poodle.Location = self
         .addConstants(/** @lends poodle.Location */{
             /**
+             * Root path for events triggered on the location.
+             * Gets prepended to the `eventPath` of the instance.
              * @constant
              * @type {string}
              */
@@ -72,7 +78,10 @@ troop.postpone(poodle, 'Location', function () {
                 return location && this.locationPath.equals(location.locationPath);
             },
 
-            /** @returns {string} */
+            /**
+             * Serializes Location into slash-separated string. Takes root path into account.
+             * @returns {string}
+             */
             toString: function () {
                 var LOCATION_ROOT_PATH = this.LOCATION_ROOT_PATH,
                     asArray = this.locationPath.asArray;

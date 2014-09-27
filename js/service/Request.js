@@ -14,6 +14,7 @@ troop.postpone(poodle, 'Request', function () {
      */
 
     /**
+     * The Request class describes a service request.
      * @class
      * @extends troop.Base
      */
@@ -43,20 +44,33 @@ troop.postpone(poodle, 'Request', function () {
                     .isLocation(endpoint, "Invalid endpoint")
                     .isObjectOptional(params, "Invalid parameters");
 
-                /** @type {poodle.Endpoint} */
+                /**
+                 * Endpoint the request addresses.
+                 * @type {poodle.Endpoint}
+                 */
                 this.endpoint = endpoint;
 
-                /** @type {string} */
+                /**
+                 * HTTP method associated with the request.
+                 * @type {string}
+                 */
                 this.httpMethod = 'GET';
 
-                /** @type {sntls.Collection} */
+                /**
+                 * Collection of header key-value pairs.
+                 * @type {sntls.Collection}
+                 */
                 this.headers = sntls.Collection.create();
 
-                /** @type {sntls.Collection} */
+                /**
+                 * Collection of query parameter key-value pairs.
+                 * @type {sntls.Collection}
+                 */
                 this.params = sntls.Collection.create(params);
             },
 
             /**
+             * Sets HTTP method property.
              * @param httpMethod
              * @returns {poodle.Request}
              */
@@ -67,8 +81,11 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
-             * @param {string} headerName
-             * @param {string} headerValue
+             * Sets a header key-value pair. Overwrites existing header entry by the same `headerName`.
+             * @example
+             * request.addHeader('Content-Type', 'application/json);
+             * @param {string} headerName Name of header entry.
+             * @param {string} headerValue Header entry value.
              * @returns {poodle.Request}
              */
             addHeader: function (headerName, headerValue) {
@@ -77,6 +94,7 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
+             * Sets multiple header key-value pairs. Overwrites existing header entries having the same keys.
              * @param {object} headers
              * @returns {poodle.Request}
              */
@@ -94,8 +112,9 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
-             * @param {string} paramName
-             * @param {string} paramValue
+             * Sets query parameter key-value pair. Overwrites existing parameter entry by the same `paramName`.
+             * @param {string} paramName Name of query parameter.
+             * @param {string} paramValue Query parameter value.
              * @returns {poodle.Request}
              */
             addParam: function (paramName, paramValue) {
@@ -104,6 +123,8 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
+             * Sets multiple query parameter key-value pairs. Overwrites existing query parameter entries
+             * having the same keys.
              * @param {object} params
              * @returns {poodle.Request}
              */
@@ -120,7 +141,11 @@ troop.postpone(poodle, 'Request', function () {
                 return this;
             },
 
-            /** @returns {string} */
+            /**
+             * Serializes request as a path consisting of the HTTP method, endpoint and parameters.
+             * TODO: Include headers as well?
+             * @returns {string}
+             */
             toString: function () {
                 return [
                     this.httpMethod,
@@ -137,6 +162,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
     poodle.Endpoint
         .addMethods(/** @lends poodle.Endpoint# */{
             /**
+             * Converts endpoint to `Request`.
              * @param {object} [params]
              * @returns {poodle.Request}
              */
@@ -180,6 +206,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
         Array.prototype,
         /** @lends Array# */{
             /**
+             * Converts `Array` to `Request`.
              * @param {object} [params]
              * @returns {poodle.Request}
              * @example
@@ -196,6 +223,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
         String.prototype,
         /** @lends String# */{
             /**
+             * Converts `String` to `Request`.
              * @param {object} [params]
              * @returns {poodle.Request}
              * @example
