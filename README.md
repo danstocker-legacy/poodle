@@ -5,6 +5,8 @@ Poodle
 
 Provides an API for managing service calls and static image loading that is a) evented (based on [evan](https://github.com/danstocker/evan)) and b) is consistent with the OOP principles laid down in [troop](https://github.com/production-minds/troop).
 
+[Reference](http://danstocker.github.io/poodle)
+
 Examples
 --------
 
