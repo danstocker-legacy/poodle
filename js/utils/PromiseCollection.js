@@ -5,6 +5,7 @@ troop.postpone(poodle, 'PromiseCollection', function (ns, className, /**jQuery*/
     var modelPromise = $.Deferred().promise();
 
     /**
+     * Creates a PromiseCollection instance.
      * @name poodle.PromiseCollection.create
      * @function
      * @param {object} items
@@ -12,13 +13,18 @@ troop.postpone(poodle, 'PromiseCollection', function (ns, className, /**jQuery*/
      */
 
     /**
+     * The PromiseCollection offers a `Collection`-based solution for joining multiple promises.
+     * (The joined promise resolves when *all* promises resolve, and reject when *any* of the promises reject.)
      * @class
      * @extends sntls.Collection
      * @extends jQuery.Promise
      */
     poodle.PromiseCollection = sntls.Collection.of(modelPromise)
         .addMethods(/** @lends poodle.PromiseCollection# */{
-            /** @returns {jQuery.Promise} */
+            /**
+             * Obtains joined promise for all promises in the collection.
+             * @returns {jQuery.Promise}
+             */
             getJoinedPromise: function () {
                 return $.when.apply($, this.getValues());
             }
@@ -30,7 +36,10 @@ troop.amendPostponed(sntls, 'Hash', function () {
 
     sntls.Hash
         .addMethods(/** @lends sntls.Hash */{
-            /** @returns {poodle.PromiseCollection} */
+            /**
+             * Converts `Hash` to `PromiseCollection`.
+             * @returns {poodle.PromiseCollection}
+             */
             toPromiseCollection: function () {
                 return poodle.PromiseCollection.create(this.items);
             }
@@ -43,7 +52,10 @@ troop.amendPostponed(sntls, 'Hash', function () {
     troop.Properties.addProperties.call(
         Array.prototype,
         /** @lends Array# */{
-            /** @returns {poodle.PromiseCollection} */
+            /**
+             * Converts `Array` to `PromiseCollection`.
+             * @returns {poodle.PromiseCollection}
+             */
             toPromiseCollection: function () {
                 return poodle.PromiseCollection.create(this);
             }
