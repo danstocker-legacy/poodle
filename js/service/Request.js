@@ -24,13 +24,22 @@ troop.postpone(poodle, 'Request', function () {
              * @type {object}
              * @constant
              */
-            METHODS: {
+            httpMethods: {
                 "OPTIONS": "OPTIONS",
                 "GET"    : "GET",
                 "HEAD"   : "HEAD",
                 "POST"   : "POST",
                 "PUT"    : "PUT",
                 "DELETE" : "DELETE"
+            },
+
+            /**
+             * @type {object}
+             * @constant
+             */
+            bodyFormats: {
+                'default': 'default',
+                'json'   : 'json'
             }
         })
         .addMethods(/** @lends poodle.Request# */{
@@ -67,16 +76,33 @@ troop.postpone(poodle, 'Request', function () {
                  * @type {sntls.Collection}
                  */
                 this.params = sntls.Collection.create(params);
+
+                /**
+                 * Request body format.
+                 * @type {string}
+                 */
+                this.bodyFormat = 'default';
             },
 
             /**
              * Sets HTTP method property.
-             * @param httpMethod
+             * @param {string} httpMethod A valid HTTP method string. 'GET', 'POST', 'DELETE', etc.
              * @returns {poodle.Request}
              */
             setHttpMethod: function (httpMethod) {
                 dessert.isHttpMethod(httpMethod, "Invalid HTTP method");
                 this.httpMethod = httpMethod;
+                return this;
+            },
+
+            /**
+             * Sets body format property.
+             * @param {string} bodyFormat Either 'default' or 'json'.
+             * @returns {poodle.Request}
+             */
+            setBodyFormat: function (bodyFormat) {
+                dessert.isBodyFormat(bodyFormat, "Invalid body format");
+                this.bodyFormat = bodyFormat;
                 return this;
             },
 
@@ -142,18 +168,6 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
-             * Sets a JSON request body. Overwrites previously set JSON body or parameters.
-             * TODO: Add tests.
-             * @param {object} params
-             * @returns {poodle.Request}
-             */
-            setJsonBody: function (params) {
-                dessert.isObject(params, "Invalid params");
-                this.params.items = JSON.stringify(params);
-                return this;
-            },
-
-            /**
              * Serializes request as a path consisting of the HTTP method, endpoint and parameters.
              * TODO: Include headers as well?
              * @returns {string}
@@ -188,29 +202,25 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
-        /**
-         * @param {string} expr
-         * @returns {boolean}
-         */
+        /** @param {string} expr */
         isHttpMethod: function (expr) {
-            return poodle.Request.METHODS[expr] === expr;
+            return expr && poodle.Request.httpMethods[expr] === expr;
         },
 
-        /**
-         * @param {poodle.Request} expr
-         * @returns {boolean}
-         */
+        /** @param {string} expr */
+        isBodyFormat: function (expr) {
+            return expr && poodle.Request.bodyFormats[expr] === expr;
+        },
+
+        /** @param {poodle.Request} expr */
         isRequest: function (expr) {
             return poodle.Request.isBaseOf(expr);
         },
 
-        /**
-         * @param {poodle.Request} [expr]
-         * @returns {boolean}
-         */
+        /** @param {poodle.Request} [expr] */
         isRequestOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                poodle.Request.isBaseOf(expr);
+                   poodle.Request.isBaseOf(expr);
         }
     });
 

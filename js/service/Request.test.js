@@ -69,6 +69,17 @@
         equal(request.httpMethod, 'OPTIONS', "should set HTTP method property to the one specified");
     });
 
+    test("Request body format setter", function () {
+        var request = 'foo/bar'.toRequest();
+
+        raises(function () {
+            request.setBodyFormat('foo');
+        }, "should raise exception on invalid body format");
+
+        strictEqual(request.setBodyFormat('json'), request, "should be chainable");
+        equal(request.bodyFormat, 'json', "should set bodyFormat property to the one specified");
+    });
+
     test("Header addition", function () {
         expect(3);
 
