@@ -122,6 +122,9 @@ troop.postpone(poodle, 'Request', function () {
              * @returns {poodle.Request}
              */
             setHeader: function (headerName, headerValue) {
+                dessert
+                    .isString(headerName, "Invalid header name")
+                    .isString(headerValue, "Invalid header value");
                 this.headers.setItem(headerName, headerValue);
                 return this;
             },
@@ -147,10 +150,11 @@ troop.postpone(poodle, 'Request', function () {
             /**
              * Sets query parameter key-value pair. Overwrites existing parameter entry by the same `paramName`.
              * @param {string} paramName Name of query parameter.
-             * @param {string} paramValue Query parameter value.
+             * @param {*} paramValue Query parameter value.
              * @returns {poodle.Request}
              */
             setParam: function (paramName, paramValue) {
+                dessert.isString(paramName, "Invalid param name");
                 this.params.setItem(paramName, paramValue);
                 return this;
             },
@@ -181,6 +185,7 @@ troop.postpone(poodle, 'Request', function () {
              * @returns {poodle.Request}
              */
             setAjaxOption: function (optionName, optionValue) {
+                dessert.isString(optionName, "Invalid ajax option name");
                 this.ajaxOptions.setItem(optionName, optionValue);
                 return this;
             },

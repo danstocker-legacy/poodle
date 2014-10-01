@@ -81,9 +81,13 @@
     });
 
     test("Header addition", function () {
-        expect(3);
+        expect(4);
 
         var request = 'foo/bar'.toRequest();
+
+        raises(function () {
+            request.setHeader({});
+        }, "should raise exception on invalid arguments");
 
         request.headers.addMocks({
             setItem: function (key, value) {
@@ -117,9 +121,13 @@
     });
 
     test("Parameter addition", function () {
-        expect(3);
+        expect(4);
 
         var request = 'foo/bar'.toRequest();
+
+        raises(function () {
+            request.addParam({});
+        }, "should raise exception on invalid arguments");
 
         request.params.addMocks({
             setItem: function (key, value) {
@@ -153,9 +161,13 @@
     });
 
     test("Ajax option addition", function () {
-        expect(3);
+        expect(4);
 
         var request = 'foo/bar'.toRequest();
+
+        raises(function () {
+            request.setAjaxOption({});
+        }, "should raise exception on invalid arguments");
 
         request.ajaxOptions.addMocks({
             setItem: function (key, value) {
