@@ -70,6 +70,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             /**
              * Triggers service related events (start - success/failure).
              * @param {jQuery.Promise} ajaxPromise
+             * @returns {jQuery.Promise}
              * @private
              */
             _triggerEvents: function (ajaxPromise) {
@@ -96,6 +97,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                             .setJqXhr(jqXHR)
                             .triggerSync(eventPath);
                     });
+
+                return ajaxPromise;
             }
         })
         .addMethods(/** @lends poodle.Service# */{
