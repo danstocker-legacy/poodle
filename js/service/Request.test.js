@@ -149,6 +149,42 @@
         deepEqual(addedItems, [
             ['hello', 'world'],
             ['mona', 'lisa']
-        ], "should add all key-value pairs to headers collection");
+        ], "should add all key-value pairs to params collection");
+    });
+
+    test("Ajax option addition", function () {
+        expect(3);
+
+        var request = 'foo/bar'.toRequest();
+
+        request.ajaxOptions.addMocks({
+            setItem: function (key, value) {
+                equal(key, 'hello', "should pass key to ajax option collection item setter");
+                equal(value, 'world', "should pass value to ajax option collection item setter");
+            }
+        });
+
+        strictEqual(request.setAjaxOption('hello', 'world'), request, "should be chainable");
+    });
+
+    test("Ajax options addition", function () {
+        var request = 'foo/bar'.toRequest(),
+            addedItems = [];
+
+        request.ajaxOptions.addMocks({
+            setItem: function (key, value) {
+                addedItems.push([key, value]);
+            }
+        });
+
+        strictEqual(request.addAjaxOptions({
+            hello: 'world',
+            mona : 'lisa'
+        }), request, "should be chainable");
+
+        deepEqual(addedItems, [
+            ['hello', 'world'],
+            ['mona', 'lisa']
+        ], "should add all key-value pairs to ajax option collection");
     });
 }());

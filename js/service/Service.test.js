@@ -78,6 +78,23 @@
         p$.Service.promiseRegistry.removeMocks();
     });
 
+    test("Calling service with request with custom options", function () {
+        expect(1);
+
+        var request = 'foo/bar'.toRequest()
+                .setAjaxOption('foo', 'bar'),
+            service = request.toService();
+
+        service.addMocks({
+            _ajaxProxy: function (options) {
+                equal(options.foo, 'bar', "should merge custom ajax options from request");
+                return $.Deferred().promise();
+            }
+        });
+
+        service.callService();
+    });
+
     test("Calling service with custom options", function () {
         expect(1);
 
@@ -86,19 +103,7 @@
 
         service.addMocks({
             _ajaxProxy: function (options) {
-                deepEqual(
-                    options,
-                    {
-                        dataType: "json",
-                        type    : 'GET',
-                        url     : 'foo/bar'.toEndpoint().toString(),
-                        headers : {},
-                        data    : {},
-                        timeout : this.SERVICE_TIMEOUT,
-                        async   : false
-                    },
-                    "should call jQuery ajax with correct options"
-                );
+                equal(options.async, false, "should merge specified custom ajax options");
                 return $.Deferred().promise();
             }
         });
@@ -116,18 +121,7 @@
 
         service.addMocks({
             _ajaxProxy: function (options) {
-                deepEqual(
-                    options,
-                    {
-                        dataType: "json",
-                        type    : 'GET',
-                        url     : 'foo/bar'.toEndpoint().toString(),
-                        headers : {},
-                        data    : {},
-                        timeout : 0
-                    },
-                    "should call jQuery ajax with correct options"
-                );
+                equal(options.timeout, 0, "should override specified ajax options");
                 return $.Deferred().promise();
             }
         });

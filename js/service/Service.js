@@ -157,32 +157,34 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     requestBody,
                     requestHeaders;
 
-                switch (request.bodyFormat) {
-                case 'json':
-                    requestBody = JSON.stringify(request.params.items);
-                    requestHeaders = request.headers.clone()
-                        .setItem('Content-Type', 'application/json')
-                        .items;
-                    break;
-                default:
-                case 'default':
-                    requestBody = request.params.items;
-                    requestHeaders = request.headers.items;
-                }
-
-                // merging default ajax options with specified custom options
-                ajaxOptions = sntls.Collection.create(ajaxOptions)
-                    .mergeWith(sntls.Collection.create({
-                        dataType: "json",
-                        type    : request.httpMethod,
-                        url     : request.endpoint.toString(),
-                        headers : requestHeaders,
-                        data    : requestBody,
-                        timeout : this.SERVICE_TIMEOUT
-                    }))
-                    .items;
-
                 if (!promise) {
+                    switch (request.bodyFormat) {
+                    case 'json':
+                        requestBody = JSON.stringify(request.params.items);
+                        requestHeaders = request.headers.clone()
+                            .setItem('Content-Type', 'application/json')
+                            .items;
+                        break;
+                    default:
+                    case 'default':
+                        requestBody = request.params.items;
+                        requestHeaders = request.headers.items;
+                    }
+
+                    // merging default ajax options with custom options
+                    // custom options taking precedence
+                    ajaxOptions = sntls.Collection.create(ajaxOptions)
+                        .mergeWith(request.ajaxOptions)
+                        .mergeWith(sntls.Collection.create({
+                            dataType: "json",
+                            type    : request.httpMethod,
+                            url     : request.endpoint.toString(),
+                            headers : requestHeaders,
+                            data    : requestBody,
+                            timeout : this.SERVICE_TIMEOUT
+                        }))
+                        .items;
+
                     promise = this._ajaxProxy(ajaxOptions);
 
                     // storing promise in registry
