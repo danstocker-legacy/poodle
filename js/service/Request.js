@@ -142,6 +142,18 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
+             * Sets a JSON request body. Overwrites previously set JSON body or parameters.
+             * TODO: Add tests.
+             * @param {object} params
+             * @returns {poodle.Request}
+             */
+            setJsonBody: function (params) {
+                dessert.isObject(params, "Invalid params");
+                this.params.items = JSON.stringify(params);
+                return this;
+            },
+
+            /**
              * Serializes request as a path consisting of the HTTP method, endpoint and parameters.
              * TODO: Include headers as well?
              * @returns {string}
