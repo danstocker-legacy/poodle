@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, evan, jQuery, poodle */
+/*global console, dessert, troop, sntls, evan, jQuery, poodle */
 troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
     "use strict";
 
@@ -230,4 +230,25 @@ troop.amendPostponed(poodle, 'Request', function () {
                 return poodle.Service.create(this);
             }
         });
+});
+
+troop.postpone(poodle, 'logServiceEvents', function () {
+    "use strict";
+
+    /**
+     * Starts logging all service related events to the console.
+     * @type {function}
+     */
+    poodle.logServiceEvents = function () {
+        [].toEndpoint()
+            .subscribeTo(poodle.Service.EVENT_SERVICE_START, function (event) {
+                console.info("service start", event.request.endpoint.toString(), event);
+            })
+            .subscribeTo(poodle.Service.EVENT_SERVICE_SUCCESS, function (event) {
+                console.info("service success", event.request.endpoint.toString(), event);
+            })
+            .subscribeTo(poodle.Service.EVENT_SERVICE_FAILURE, function (event) {
+                console.info("service failed", event.request.endpoint.toString(), event);
+            });
+    };
 });
