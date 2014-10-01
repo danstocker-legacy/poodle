@@ -248,6 +248,28 @@
         service.callServiceSync({async: 'foo'});
     });
 
+    test("Calling service on JSON request", function () {
+        expect(2);
+
+        var params = {
+                hello: 'world'
+            },
+            service = 'foo/bar'.toRequest()
+                .setBodyFormat('json')
+                .addParams(params)
+                .toService();
+
+        service.addMocks({
+            _ajaxProxy: function (ajaxOptions) {
+                equal(ajaxOptions.data, JSON.stringify(params), "should set ajax data option to stringified params");
+                equal(ajaxOptions.headers['Content-Type'], 'application/json', "should set/overwrite content type header");
+                return $.Deferred().resolve();
+            }
+        });
+
+        service.callService();
+    });
+
     test("Successful offline service call", function () {
         expect(4);
 

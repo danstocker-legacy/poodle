@@ -153,7 +153,22 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 var that = this,
                     request = this.request,
                     requestId = request.toString(),
-                    promise = this.promiseRegistry.getItem(requestId);
+                    promise = this.promiseRegistry.getItem(requestId),
+                    requestBody,
+                    requestHeaders;
+
+                switch (request.bodyFormat) {
+                case 'json':
+                    requestBody = JSON.stringify(request.params.items);
+                    requestHeaders = request.headers.clone()
+                        .setItem('Content-Type', 'application/json')
+                        .items;
+                    break;
+                default:
+                case 'default':
+                    requestBody = request.params.items;
+                    requestHeaders = request.headers.items;
+                }
 
                 // merging default ajax options with specified custom options
                 ajaxOptions = sntls.Collection.create(ajaxOptions)
@@ -161,8 +176,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                         dataType: "json",
                         type    : request.httpMethod,
                         url     : request.endpoint.toString(),
-                        headers : request.headers.items,
-                        data    : request.params.items,
+                        headers : requestHeaders,
+                        data    : requestBody,
                         timeout : this.SERVICE_TIMEOUT
                     }))
                     .items;
