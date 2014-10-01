@@ -92,7 +92,7 @@
             }
         });
 
-        strictEqual(request.addHeader('hello', 'world'), request, "should be chainable");
+        strictEqual(request.setHeader('hello', 'world'), request, "should be chainable");
     });
 
     test("Headers addition", function () {
@@ -128,7 +128,7 @@
             }
         });
 
-        strictEqual(request.addParam('hello', 'world'), request, "should be chainable");
+        strictEqual(request.setParam('hello', 'world'), request, "should be chainable");
     });
 
     test("Parameters addition", function () {

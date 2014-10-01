@@ -16,7 +16,7 @@ POSTing to an endpoint:
 
     '/endpoint/path'.toEndpoint().toRequest()
         .setHttpMethod('POST')
-        .addParam('param', 'value')
+        .setParam('param', 'value')
         .toService()
             .callService();
 

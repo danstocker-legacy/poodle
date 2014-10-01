@@ -109,12 +109,12 @@ troop.postpone(poodle, 'Request', function () {
             /**
              * Sets a header key-value pair. Overwrites existing header entry by the same `headerName`.
              * @example
-             * request.addHeader('Content-Type', 'application/json);
+             * request.setHeader('Content-Type', 'application/json);
              * @param {string} headerName Name of header entry.
              * @param {string} headerValue Header entry value.
              * @returns {poodle.Request}
              */
-            addHeader: function (headerName, headerValue) {
+            setHeader: function (headerName, headerValue) {
                 this.headers.setItem(headerName, headerValue);
                 return this;
             },
@@ -143,7 +143,7 @@ troop.postpone(poodle, 'Request', function () {
              * @param {string} paramValue Query parameter value.
              * @returns {poodle.Request}
              */
-            addParam: function (paramName, paramValue) {
+            setParam: function (paramName, paramValue) {
                 this.params.setItem(paramName, paramValue);
                 return this;
             },
