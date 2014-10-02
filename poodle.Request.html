@@ -215,59 +215,6 @@
         
             
 <dt>
-    <h4 class="name" id="ajaxOptions"><span class="type-signature"></span>ajaxOptions<span class="type-signature"> :sntls.Collection</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Custom options to be passed to jQuery.ajax().
-Options stored in here override the default ajax options, and thus might break the ajax call.
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 91
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="bodyFormat"><span class="type-signature"></span>bodyFormat<span class="type-signature"> :string</span></h4>
     
     
@@ -741,7 +688,7 @@ Options stored in here override the default ajax options, and thus might break t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Service.js.html">service/Service.js</a>, line 229
+        <a href="Service.js.html">service/Service.js</a>, line 267
     </li></ul></dd>
     
     
@@ -770,138 +717,6 @@ Options stored in here override the default ajax options, and thus might break t
 	<dd>
 		
 <span class="param-type"><a href="poodle.Service.html">poodle.Service</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addAjaxOptions"><span class="type-signature"></span>addAjaxOptions<span class="signature">(ajaxOptions)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets multiple custom ajax option key-value pairs. Overwrites existing ajax option entries
-having the same keys.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>ajaxOptions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 199
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
 
 
 	</dd>
@@ -1004,7 +819,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 137
+        <a href="Request.js.html">service/Request.js</a>, line 130
     </li></ul></dd>
     
     
@@ -1136,161 +951,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 168
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setAjaxOption"><span class="type-signature"></span>setAjaxOption<span class="signature">(optionName, optionValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets custom ajax option key-value pair. Overwrites existing option entry by the same `optionName`.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>optionName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>optionValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 187
+        <a href="Request.js.html">service/Request.js</a>, line 161
     </li></ul></dd>
     
     
@@ -1421,7 +1082,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 110
+        <a href="Request.js.html">service/Request.js</a>, line 103
     </li></ul></dd>
     
     
@@ -1575,7 +1236,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 124
+        <a href="Request.js.html">service/Request.js</a>, line 117
     </li></ul></dd>
     
     
@@ -1711,7 +1372,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 99
+        <a href="Request.js.html">service/Request.js</a>, line 92
     </li></ul></dd>
     
     
@@ -1865,7 +1526,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 156
+        <a href="Request.js.html">service/Request.js</a>, line 149
     </li></ul></dd>
     
     
@@ -1949,7 +1610,7 @@ TODO: Include headers as well?
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 217
+        <a href="Request.js.html">service/Request.js</a>, line 179
     </li></ul></dd>
     
     
@@ -2010,7 +1671,7 @@ TODO: Include headers as well?
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Oct 02 2014 08:01:25 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Oct 02 2014 09:42:02 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
