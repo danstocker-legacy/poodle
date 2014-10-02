@@ -49,6 +49,24 @@
             "should return true for location w/ same path");
     });
 
+    test("Appending", function () {
+        var location = p$.Location.create('foo/bar'.toPath()),
+            appended = location.append(p$.Location.create('baz'.toPath()));
+
+        ok(appended.isA(p$.Location), "should return Location instance");
+        notStrictEqual(location, appended, "should return different Location instance");
+        equal(appended.toString(), 'foo/bar/baz', "should append specified location to current");
+    });
+
+    test("Prepending", function () {
+        var location = p$.Location.create('foo/bar'.toPath()),
+            prepended = location.prepend(p$.Location.create('baz'.toPath()));
+
+        ok(prepended.isA(p$.Location), "should return Location instance");
+        notStrictEqual(location, prepended, "should return different Location instance");
+        equal(prepended.toString(), 'baz/foo/bar', "should append specified location to current");
+    });
+
     test("Conversion to string", function () {
         var location = p$.Location.create('foo/bar'.toPath());
         equal(location.toString(), 'foo/bar', "should return location in slash notation");

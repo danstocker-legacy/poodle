@@ -79,6 +79,28 @@ troop.postpone(poodle, 'Location', function () {
             },
 
             /**
+             * Appends specified location to current location.
+             * The base class of the returned instance is determined by the current instance.
+             * @param {poodle.Location} location
+             * @returns {poodle.Location}
+             */
+            append: function (location) {
+                dessert.isLocation(location, "Invalid location");
+                return this.getBase().create(this.locationPath.append(location.locationPath));
+            },
+
+            /**
+             * Prepends specified location to current location.
+             * The base class of the returned instance is determined by the current instance.
+             * @param {poodle.Location} location
+             * @returns {poodle.Location}
+             */
+            prepend: function (location) {
+                dessert.isLocation(location, "Invalid location");
+                return this.getBase().create(this.locationPath.prepend(location.locationPath));
+            },
+
+            /**
              * Serializes Location into slash-separated string. Takes root path into account.
              * @returns {string}
              */
