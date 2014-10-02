@@ -25,7 +25,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>/*global dessert, troop, sntls, evan, jQuery, poodle */
+            <pre class="prettyprint source"><code>/*global console, dessert, troop, sntls, evan, jQuery, poodle */
 troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
     "use strict";
 
@@ -97,6 +97,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             /**
              * Triggers service related events (start - success/failure).
              * @param {jQuery.Promise} ajaxPromise
+             * @returns {jQuery.Promise}
              * @private
              */
             _triggerEvents: function (ajaxPromise) {
@@ -123,6 +124,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                             .setJqXhr(jqXHR)
                             .triggerSync(eventPath);
                     });
+
+                return ajaxPromise;
             }
         })
         .addMethods(/** @lends poodle.Service# */{
@@ -177,21 +180,38 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 var that = this,
                     request = this.request,
                     requestId = request.toString(),
-                    promise = this.promiseRegistry.getItem(requestId);
-
-                // merging default ajax options with specified custom options
-                ajaxOptions = sntls.Collection.create(ajaxOptions)
-                    .mergeWith(sntls.Collection.create({
-                        dataType: "json",
-                        type    : request.httpMethod,
-                        url     : request.endpoint.toString(),
-                        headers : request.headers.items,
-                        data    : request.params.items,
-                        timeout : this.SERVICE_TIMEOUT
-                    }))
-                    .items;
+                    promise = this.promiseRegistry.getItem(requestId),
+                    requestBody,
+                    requestHeaders;
 
                 if (!promise) {
+                    switch (request.bodyFormat) {
+                    case 'json':
+                        requestBody = JSON.stringify(request.params.items);
+                        requestHeaders = request.headers.clone()
+                            .setItem('Content-Type', 'application/json')
+                            .items;
+                        break;
+                    default:
+                    case 'default':
+                        requestBody = request.params.items;
+                        requestHeaders = request.headers.items;
+                    }
+
+                    // merging default ajax options with custom options
+                    // custom options taking precedence
+                    ajaxOptions = sntls.Collection.create(ajaxOptions)
+                        .mergeWith(request.ajaxOptions)
+                        .mergeWith(sntls.Collection.create({
+                            dataType: "json",
+                            type    : request.httpMethod,
+                            url     : request.endpoint.toString(),
+                            headers : requestHeaders,
+                            data    : requestBody,
+                            timeout : this.SERVICE_TIMEOUT
+                        }))
+                        .items;
+
                     promise = this._ajaxProxy(ajaxOptions);
 
                     // storing promise in registry
@@ -238,6 +258,27 @@ troop.amendPostponed(poodle, 'Request', function () {
             }
         });
 });
+
+troop.postpone(poodle, 'logServiceEvents', function () {
+    "use strict";
+
+    /**
+     * Starts logging all service related events to the console.
+     * @type {function}
+     */
+    poodle.logServiceEvents = function () {
+        [].toEndpoint()
+            .subscribeTo(poodle.Service.EVENT_SERVICE_START, function (event) {
+                console.info("service start", event.request.endpoint.toString(), event);
+            })
+            .subscribeTo(poodle.Service.EVENT_SERVICE_SUCCESS, function (event) {
+                console.info("service success", event.request.endpoint.toString(), event);
+            })
+            .subscribeTo(poodle.Service.EVENT_SERVICE_FAILURE, function (event) {
+                console.info("service failed", event.request.endpoint.toString(), event);
+            });
+    };
+});
 </code></pre>
         </article>
     </section>
@@ -248,13 +289,13 @@ troop.amendPostponed(poodle, 'Request', function () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="poodle.html">poodle</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li><li><a href="sntls.Path.html">Path</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="poodle.html">poodle</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 27 2014 12:50:27 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Oct 02 2014 08:01:24 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -119,7 +119,55 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="METHODS"><span class="type-signature">&lt;static, constant> </span>METHODS<span class="type-signature"> :object</span></h4>
+    <h4 class="name" id="bodyFormats"><span class="type-signature">&lt;static, constant> </span>bodyFormats<span class="type-signature"> :object</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 40
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="httpMethods"><span class="type-signature">&lt;static, constant> </span>httpMethods<span class="type-signature"> :object</span></h4>
     
     
 </dt>
@@ -150,6 +198,111 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="Request.js.html">service/Request.js</a>, line 27
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="ajaxOptions"><span class="type-signature"></span>ajaxOptions<span class="type-signature"> :sntls.Collection</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Custom options to be passed to jQuery.ajax().
+Options stored in here override the default ajax options, and thus might break the ajax call.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 91
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="bodyFormat"><span class="type-signature"></span>bodyFormat<span class="type-signature"> :string</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Request body format.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 84
     </li></ul></dd>
     
     
@@ -201,7 +354,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 51
+        <a href="Request.js.html">service/Request.js</a>, line 60
     </li></ul></dd>
     
     
@@ -253,7 +406,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 63
+        <a href="Request.js.html">service/Request.js</a>, line 72
     </li></ul></dd>
     
     
@@ -305,7 +458,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 57
+        <a href="Request.js.html">service/Request.js</a>, line 66
     </li></ul></dd>
     
     
@@ -357,7 +510,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 69
+        <a href="Request.js.html">service/Request.js</a>, line 78
     </li></ul></dd>
     
     
@@ -588,7 +741,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Service.js.html">service/Service.js</a>, line 209
+        <a href="Service.js.html">service/Service.js</a>, line 229
     </li></ul></dd>
     
     
@@ -630,7 +783,7 @@
         
             
 <dt>
-    <h4 class="name" id="addHeader"><span class="type-signature"></span>addHeader<span class="signature">(headerName, headerValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    <h4 class="name" id="addAjaxOptions"><span class="type-signature"></span>addAjaxOptions<span class="signature">(ajaxOptions)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
     
     
 </dt>
@@ -638,7 +791,8 @@
     
     
     <div class="description">
-        Sets a header key-value pair. Overwrites existing header entry by the same `headerName`.
+        Sets multiple custom ajax option key-value pairs. Overwrites existing ajax option entries
+having the same keys.
     </div>
     
 
@@ -672,13 +826,13 @@
 	
         <tr>
             
-                <td class="name"><code>headerName</code></td>
+                <td class="name"><code>ajaxOptions</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
             
@@ -688,30 +842,7 @@
             
             
             
-            <td class="description last">Name of header entry.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>headerValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">Header entry value.</td>
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -742,7 +873,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 91
+        <a href="Request.js.html">service/Request.js</a>, line 199
     </li></ul></dd>
     
     
@@ -778,11 +909,6 @@
 
         
     
-    
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>request.addHeader('Content-Type', 'application/json);</code></pre>
-
     
 </dd>
 
@@ -878,161 +1004,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 101
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addParam"><span class="type-signature"></span>addParam<span class="signature">(paramName, paramValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets query parameter key-value pair. Overwrites existing parameter entry by the same `paramName`.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>paramName</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">Name of query parameter.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>paramValue</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">Query parameter value.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 120
+        <a href="Request.js.html">service/Request.js</a>, line 137
     </li></ul></dd>
     
     
@@ -1164,7 +1136,7 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 131
+        <a href="Request.js.html">service/Request.js</a>, line 168
     </li></ul></dd>
     
     
@@ -1200,6 +1172,450 @@ having the same keys.
 
         
     
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setAjaxOption"><span class="type-signature"></span>setAjaxOption<span class="signature">(optionName, optionValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets custom ajax option key-value pair. Overwrites existing option entry by the same `optionName`.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>optionName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>optionValue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 187
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setBodyFormat"><span class="type-signature"></span>setBodyFormat<span class="signature">(bodyFormat)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets body format property.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>bodyFormat</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Either 'default' or 'json'.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 110
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setHeader"><span class="type-signature"></span>setHeader<span class="signature">(headerName, headerValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets a header key-value pair. Overwrites existing header entry by the same `headerName`.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>headerName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name of header entry.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>headerValue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Header entry value.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 124
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>request.setHeader('Content-Type', 'application/json);</code></pre>
+
     
 </dd>
 
@@ -1253,13 +1669,18 @@ having the same keys.
             
             <td class="type">
             
+                
+<span class="param-type">string</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">A valid HTTP method string. 'GET', 'POST', 'DELETE', etc.</td>
         </tr>
 	
 	
@@ -1290,7 +1711,161 @@ having the same keys.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 77
+        <a href="Request.js.html">service/Request.js</a>, line 99
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setParam"><span class="type-signature"></span>setParam<span class="signature">(paramName, paramValue)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets query parameter key-value pair. Overwrites existing parameter entry by the same `paramName`.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>paramName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name of query parameter.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>paramValue</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Query parameter value.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Request.js.html">service/Request.js</a>, line 156
     </li></ul></dd>
     
     
@@ -1374,7 +1949,7 @@ TODO: Include headers as well?
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Request.js.html">service/Request.js</a>, line 149
+        <a href="Request.js.html">service/Request.js</a>, line 217
     </li></ul></dd>
     
     
@@ -1429,13 +2004,13 @@ TODO: Include headers as well?
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="poodle.html">poodle</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li><li><a href="sntls.Path.html">Path</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="poodle.html">poodle</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 27 2014 12:50:28 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Oct 02 2014 08:01:25 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

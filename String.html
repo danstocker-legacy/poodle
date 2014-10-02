@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: PromiseCollection</title>
+    <title>JSDoc: Class: String</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: PromiseCollection</h1>
+    <h1 class="page-title">Class: String</h1>
     
     
 
@@ -27,9 +27,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="poodle.html">poodle</a>.</span>
-    
-    PromiseCollection
+    String
     </h2>
     
 </header>  
@@ -40,8 +38,7 @@
     
     
     <div class="description">
-        The PromiseCollection offers a `Collection`-based solution for joining multiple promises.
-(The joined promise resolves when *all* promises resolve, and reject when *any* of the promises reject.)
+        Native string class.
     </div>
     
 
@@ -74,7 +71,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PromiseCollection.js.html">utils/PromiseCollection.js</a>, line 22
+        <a href="namespace.js.html">namespace.js</a>, line 33
     </li></ul></dd>
     
     
@@ -99,14 +96,6 @@
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>sntls.Collection</li>
-        
-            <li><a href="jQuery.Promise.html">jQuery.Promise</a></li>
-        </ul>
-    
     
     
     
@@ -124,7 +113,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="create"><span class="type-signature">&lt;static> </span>create<span class="signature">(items)</span><span class="type-signature"> &rarr; {<a href="poodle.PromiseCollection.html">poodle.PromiseCollection</a>}</span></h4>
+    <h4 class="name" id="toEndpoint"><span class="type-signature"></span>toEndpoint<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="poodle.Endpoint.html">poodle.Endpoint</a>}</span></h4>
     
     
 </dt>
@@ -132,7 +121,173 @@
     
     
     <div class="description">
-        Creates a PromiseCollection instance.
+        Converts `String` to `Endpoint`
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Endpoint.js.html">service/Endpoint.js</a>, line 57
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.Endpoint.html">poodle.Endpoint</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="toImageUrl"><span class="type-signature"></span>toImageUrl<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="poodle.ImageUrl.html">poodle.ImageUrl</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Converts `String` to `ImageUrl`.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ImageUrl.js.html">image/ImageUrl.js</a>, line 66
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="poodle.ImageUrl.html">poodle.ImageUrl</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="toRequest"><span class="type-signature"></span>toRequest<span class="signature">(<span class="optional">params</span>)</span><span class="type-signature"> &rarr; {<a href="poodle.Request.html">poodle.Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Converts `String` to `Request`.
     </div>
     
 
@@ -154,6 +309,8 @@
 		<th>Type</th>
 		
 		
+		<th>Argument</th>
+		
 		
 		
 		
@@ -166,7 +323,7 @@
 	
         <tr>
             
-                <td class="name"><code>items</code></td>
+                <td class="name"><code>params</code></td>
             
             
             <td class="type">
@@ -178,6 +335,16 @@
             
             </td>
             
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
             
             
             
@@ -213,7 +380,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PromiseCollection.js.html">utils/PromiseCollection.js</a>, line 7
+        <a href="Request.js.html">service/Request.js</a>, line 296
     </li></ul></dd>
     
     
@@ -241,7 +408,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="poodle.PromiseCollection.html">poodle.PromiseCollection</a></span>
+<span class="param-type"><a href="poodle.Request.html">poodle.Request</a></span>
 
 
 	</dd>
@@ -250,88 +417,10 @@
         
     
     
-</dd>
-
+        <h5>Example</h5>
         
-            
-<dt>
-    <h4 class="name" id="getJoinedPromise"><span class="type-signature"></span>getJoinedPromise<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="jQuery.Promise.html">jQuery.Promise</a>}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Obtains joined promise for all promises in the collection.
-    </div>
-    
+    <pre class="prettyprint"><code>'foo/bar'.toRequest()</code></pre>
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PromiseCollection.js.html">utils/PromiseCollection.js</a>, line 28
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="jQuery.Promise.html">jQuery.Promise</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
     
 </dd>
 

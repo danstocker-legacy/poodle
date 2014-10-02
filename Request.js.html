@@ -51,13 +51,22 @@ troop.postpone(poodle, 'Request', function () {
              * @type {object}
              * @constant
              */
-            METHODS: {
+            httpMethods: {
                 "OPTIONS": "OPTIONS",
                 "GET"    : "GET",
                 "HEAD"   : "HEAD",
                 "POST"   : "POST",
                 "PUT"    : "PUT",
                 "DELETE" : "DELETE"
+            },
+
+            /**
+             * @type {object}
+             * @constant
+             */
+            bodyFormats: {
+                'default': 'default',
+                'json'   : 'json'
             }
         })
         .addMethods(/** @lends poodle.Request# */{
@@ -94,11 +103,24 @@ troop.postpone(poodle, 'Request', function () {
                  * @type {sntls.Collection}
                  */
                 this.params = sntls.Collection.create(params);
+
+                /**
+                 * Request body format.
+                 * @type {string}
+                 */
+                this.bodyFormat = 'default';
+
+                /**
+                 * Custom options to be passed to jQuery.ajax().
+                 * Options stored in here override the default ajax options, and thus might break the ajax call.
+                 * @type {sntls.Collection}
+                 */
+                this.ajaxOptions = sntls.Collection.create();
             },
 
             /**
              * Sets HTTP method property.
-             * @param httpMethod
+             * @param {string} httpMethod A valid HTTP method string. 'GET', 'POST', 'DELETE', etc.
              * @returns {poodle.Request}
              */
             setHttpMethod: function (httpMethod) {
@@ -108,14 +130,28 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
+             * Sets body format property.
+             * @param {string} bodyFormat Either 'default' or 'json'.
+             * @returns {poodle.Request}
+             */
+            setBodyFormat: function (bodyFormat) {
+                dessert.isBodyFormat(bodyFormat, "Invalid body format");
+                this.bodyFormat = bodyFormat;
+                return this;
+            },
+
+            /**
              * Sets a header key-value pair. Overwrites existing header entry by the same `headerName`.
              * @example
-             * request.addHeader('Content-Type', 'application/json);
+             * request.setHeader('Content-Type', 'application/json);
              * @param {string} headerName Name of header entry.
              * @param {string} headerValue Header entry value.
              * @returns {poodle.Request}
              */
-            addHeader: function (headerName, headerValue) {
+            setHeader: function (headerName, headerValue) {
+                dessert
+                    .isString(headerName, "Invalid header name")
+                    .isString(headerValue, "Invalid header value");
                 this.headers.setItem(headerName, headerValue);
                 return this;
             },
@@ -141,10 +177,11 @@ troop.postpone(poodle, 'Request', function () {
             /**
              * Sets query parameter key-value pair. Overwrites existing parameter entry by the same `paramName`.
              * @param {string} paramName Name of query parameter.
-             * @param {string} paramValue Query parameter value.
+             * @param {*} paramValue Query parameter value.
              * @returns {poodle.Request}
              */
-            addParam: function (paramName, paramValue) {
+            setParam: function (paramName, paramValue) {
+                dessert.isString(paramName, "Invalid param name");
                 this.params.setItem(paramName, paramValue);
                 return this;
             },
@@ -163,6 +200,37 @@ troop.postpone(poodle, 'Request', function () {
                 sntls.Collection.create(params)
                     .forEachItem(function (value, key) {
                         that.params.setItem(key, value);
+                    });
+
+                return this;
+            },
+
+            /**
+             * Sets custom ajax option key-value pair. Overwrites existing option entry by the same `optionName`.
+             * @param {string} optionName
+             * @param {*} optionValue
+             * @returns {poodle.Request}
+             */
+            setAjaxOption: function (optionName, optionValue) {
+                dessert.isString(optionName, "Invalid ajax option name");
+                this.ajaxOptions.setItem(optionName, optionValue);
+                return this;
+            },
+
+            /**
+             * Sets multiple custom ajax option key-value pairs. Overwrites existing ajax option entries
+             * having the same keys.
+             * @param {object} ajaxOptions
+             * @returns {poodle.Request}
+             */
+            addAjaxOptions: function (ajaxOptions) {
+                dessert.isObject(ajaxOptions, "Invalid ajax options");
+
+                var that = this;
+
+                sntls.Collection.create(ajaxOptions)
+                    .forEachItem(function (value, key) {
+                        that.ajaxOptions.setItem(key, value);
                     });
 
                 return this;
@@ -203,29 +271,25 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
-        /**
-         * @param {string} expr
-         * @returns {boolean}
-         */
+        /** @param {string} expr */
         isHttpMethod: function (expr) {
-            return poodle.Request.METHODS[expr] === expr;
+            return expr && poodle.Request.httpMethods[expr] === expr;
         },
 
-        /**
-         * @param {poodle.Request} expr
-         * @returns {boolean}
-         */
+        /** @param {string} expr */
+        isBodyFormat: function (expr) {
+            return expr && poodle.Request.bodyFormats[expr] === expr;
+        },
+
+        /** @param {poodle.Request} expr */
         isRequest: function (expr) {
             return poodle.Request.isBaseOf(expr);
         },
 
-        /**
-         * @param {poodle.Request} [expr]
-         * @returns {boolean}
-         */
+        /** @param {poodle.Request} [expr] */
         isRequestOptional: function (expr) {
             return typeof expr === 'undefined' ||
-                poodle.Request.isBaseOf(expr);
+                   poodle.Request.isBaseOf(expr);
         }
     });
 
@@ -272,13 +336,13 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="poodle.html">poodle</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Array.html">Array</a></li><li><a href="dessert.html">dessert</a></li><li><a href="jQuery.Deferred.html">Deferred</a></li><li><a href="jQuery.Promise.html">Promise</a></li><li><a href="poodle.Endpoint.html">Endpoint</a></li><li><a href="poodle.Image.html">Image</a></li><li><a href="poodle.ImageEvent.html">ImageEvent</a></li><li><a href="poodle.ImageUrl.html">ImageUrl</a></li><li><a href="poodle.Location.html">Location</a></li><li><a href="poodle.PromiseCollection.html">PromiseCollection</a></li><li><a href="poodle.Request.html">Request</a></li><li><a href="poodle.Service.html">Service</a></li><li><a href="poodle.ServiceEvent.html">ServiceEvent</a></li><li><a href="sntls.Path.html">Path</a></li><li><a href="String.html">String</a></li></ul><h3>Namespaces</h3><ul><li><a href="evan.html">evan</a></li><li><a href="poodle.html">poodle</a></li><li><a href="sntls.html">sntls</a></li><li><a href="troop.html">troop</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 27 2014 12:50:27 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Oct 02 2014 08:01:24 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
