@@ -82,13 +82,6 @@ troop.postpone(poodle, 'Request', function () {
                  * @type {string}
                  */
                 this.bodyFormat = 'default';
-
-                /**
-                 * Custom options to be passed to jQuery.ajax().
-                 * Options stored in here override the default ajax options, and thus might break the ajax call.
-                 * @type {sntls.Collection}
-                 */
-                this.ajaxOptions = sntls.Collection.create();
             },
 
             /**
@@ -173,37 +166,6 @@ troop.postpone(poodle, 'Request', function () {
                 sntls.Collection.create(params)
                     .forEachItem(function (value, key) {
                         that.params.setItem(key, value);
-                    });
-
-                return this;
-            },
-
-            /**
-             * Sets custom ajax option key-value pair. Overwrites existing option entry by the same `optionName`.
-             * @param {string} optionName
-             * @param {*} optionValue
-             * @returns {poodle.Request}
-             */
-            setAjaxOption: function (optionName, optionValue) {
-                dessert.isString(optionName, "Invalid ajax option name");
-                this.ajaxOptions.setItem(optionName, optionValue);
-                return this;
-            },
-
-            /**
-             * Sets multiple custom ajax option key-value pairs. Overwrites existing ajax option entries
-             * having the same keys.
-             * @param {object} ajaxOptions
-             * @returns {poodle.Request}
-             */
-            addAjaxOptions: function (ajaxOptions) {
-                dessert.isObject(ajaxOptions, "Invalid ajax options");
-
-                var that = this;
-
-                sntls.Collection.create(ajaxOptions)
-                    .forEachItem(function (value, key) {
-                        that.ajaxOptions.setItem(key, value);
                     });
 
                 return this;

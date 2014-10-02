@@ -33,6 +33,46 @@
         strictEqual(service.request, request, "should set request property");
     });
 
+    test("Ajax option addition", function () {
+        expect(4);
+
+        var service = 'foo/bar'.toRequest().toService();
+
+        raises(function () {
+            service.setAjaxOption({});
+        }, "should raise exception on invalid arguments");
+
+        service.ajaxOptions.addMocks({
+            setItem: function (key, value) {
+                equal(key, 'hello', "should pass key to ajax option collection item setter");
+                equal(value, 'world', "should pass value to ajax option collection item setter");
+            }
+        });
+
+        strictEqual(service.setAjaxOption('hello', 'world'), service, "should be chainable");
+    });
+
+    test("Ajax options addition", function () {
+        var service = 'foo/bar'.toRequest().toService(),
+            addedItems = [];
+
+        service.ajaxOptions.addMocks({
+            setItem: function (key, value) {
+                addedItems.push([key, value]);
+            }
+        });
+
+        strictEqual(service.addAjaxOptions({
+            hello: 'world',
+            mona : 'lisa'
+        }), service, "should be chainable");
+
+        deepEqual(addedItems, [
+            ['hello', 'world'],
+            ['mona', 'lisa']
+        ], "should add all key-value pairs to ajax option collection");
+    });
+
     test("Calling service", function () {
         expect(6);
 
@@ -78,12 +118,12 @@
         p$.Service.promiseRegistry.removeMocks();
     });
 
-    test("Calling service with request with custom options", function () {
+    test("Calling service with custom options", function () {
         expect(1);
 
-        var request = 'foo/bar'.toRequest()
-                .setAjaxOption('foo', 'bar'),
-            service = request.toService();
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService()
+                .setAjaxOption('foo', 'bar');
 
         service.addMocks({
             _ajaxProxy: function (options) {
@@ -95,7 +135,7 @@
         service.callService();
     });
 
-    test("Calling service with custom options", function () {
+    test("Calling service with ad hoc custom options", function () {
         expect(1);
 
         var request = 'foo/bar'.toRequest(),
