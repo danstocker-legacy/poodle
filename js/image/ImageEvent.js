@@ -92,10 +92,12 @@ troop.amendPostponed(evan, 'Event', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
+        /** @param {HTMLImageElement} expr */
         isImageElement: function (expr) {
             return expr instanceof HTMLImageElement;
         },
 
+        /** @param {HTMLImageElement} [expr] */
         isImageElementOptional: function (expr) {
             return typeof expr === 'undefined' ||
                    expr instanceof HTMLImageElement;

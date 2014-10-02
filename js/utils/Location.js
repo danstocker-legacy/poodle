@@ -120,10 +120,12 @@ troop.postpone(poodle, 'Location', function () {
     "use strict";
 
     dessert.addTypes(/** @lends dessert */{
+        /** @param {poodle.Location} expr */
         isLocation: function (expr) {
             return poodle.Location.isBaseOf(expr);
         },
 
+        /** @param {poodle.Location} [expr] */
         isLocationOptional: function (expr) {
             return typeof expr === 'undefined' ||
                    poodle.Location.isBaseOf(expr);
