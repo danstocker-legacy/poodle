@@ -79,7 +79,9 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     eventPath = this.eventPath;
 
                 // sending notification about starting the service
-                this.triggerSync(this.EVENT_SERVICE_START, request);
+                this.spawnEvent(this.EVENT_SERVICE_START)
+                    .setRequest(request)
+                    .triggerSync(eventPath);
 
                 // adding handlers
                 ajaxPromise

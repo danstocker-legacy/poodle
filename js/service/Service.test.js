@@ -74,7 +74,7 @@
     });
 
     test("Calling service", function () {
-        expect(6);
+        expect(5);
 
         var request = 'foo/bar'.toRequest(),
             service = request.toService(),
@@ -99,10 +99,6 @@
                     "should call jQuery ajax with correct options"
                 );
                 return promise;
-            },
-
-            triggerSync: function (eventName) {
-                equal(eventName, this.EVENT_SERVICE_START, "should trigger service start event");
             }
         });
 
