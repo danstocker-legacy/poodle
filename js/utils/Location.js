@@ -108,9 +108,11 @@ troop.postpone(poodle, 'Location', function () {
                 var LOCATION_ROOT_PATH = this.LOCATION_ROOT_PATH,
                     asArray = this.locationPath.asArray;
 
-                asArray = LOCATION_ROOT_PATH ?
-                    [LOCATION_ROOT_PATH].concat(asArray) :
-                    asArray;
+                if (LOCATION_ROOT_PATH === '/') {
+                    asArray = [''].concat(asArray);
+                } else if (LOCATION_ROOT_PATH) {
+                    asArray = [LOCATION_ROOT_PATH].concat(asArray);
+                }
 
                 return asArray.join('/');
             }
