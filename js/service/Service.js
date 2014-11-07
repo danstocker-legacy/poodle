@@ -167,7 +167,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithSuccess: function (responseNode) {
-                return this._triggerEvents($.Deferred().resolve(responseNode, null, null));
+                var deferred = $.Deferred();
+
+                // making sure service call will be async, just like a real ajax call
+                setTimeout(function () {
+                    deferred.resolve(responseNode, null, null);
+                }, 0);
+
+                return this._triggerEvents(deferred.promise());
             },
 
             /**
@@ -177,7 +184,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @returns {jQuery.Promise}
              */
             callOfflineServiceWithFailure: function (errorThrown) {
-                return this._triggerEvents($.Deferred().reject(null, null, errorThrown));
+                var deferred = $.Deferred();
+
+                // making sure service call will be async, just like a real ajax call
+                setTimeout(function () {
+                    deferred.reject(null, null, errorThrown);
+                }, 0);
+
+                return this._triggerEvents(deferred.promise());
             },
 
             /**
@@ -240,6 +254,28 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 }
 
                 return promise;
+            },
+
+            /**
+             * Calls service in offline mode, synchronously, that will return with success, carrying the specified response body.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
+             * @example
+             * service.callOfflineServiceWithSuccessSync({foo: 'bar'});
+             * @param {*} responseNode Response body to be returned.
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithSuccessSync: function (responseNode) {
+                return this._triggerEvents($.Deferred().resolve(responseNode, null, null));
+            },
+
+            /**
+             * Calls service in offline mode, synchronously, that will return with failure, carrying the specified error value.
+             * Offline service calls behave exactly like online calls except they don't make any ajax requests.
+             * @param {*} errorThrown Error value to be returned.
+             * @returns {jQuery.Promise}
+             */
+            callOfflineServiceWithFailureSync: function (errorThrown) {
+                return this._triggerEvents($.Deferred().reject(null, null, errorThrown));
             },
 
             /**

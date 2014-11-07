@@ -1,5 +1,5 @@
 /*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$, $ */
-/*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
+/*global module, test, start, asyncTest, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
 
@@ -300,7 +300,49 @@
         service.callService();
     });
 
-    test("Successful offline service call", function () {
+    asyncTest("Successful offline service call", function () {
+        expect(3);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService(),
+            offlineResponseNode = {};
+
+        service.addMocks({
+            _triggerEvents: function (ajaxPromise) {
+                ajaxPromise.done(function (responseNode, textStatus, jqXHR) {
+                    strictEqual(responseNode, offlineResponseNode, "should pass response node to resolved promise");
+                    strictEqual(textStatus, null, "should pass null as textStatus to resolved promise");
+                    strictEqual(jqXHR, null, "should pass null as jqXhr to resolved promise");
+                    start();
+                });
+            }
+        });
+
+        service.callOfflineServiceWithSuccess(offlineResponseNode);
+    });
+
+    asyncTest("Failed offline service call", function () {
+        expect(3);
+
+        var request = 'foo/bar'.toRequest(),
+            service = request.toService(),
+            offlineErrorThrown = {};
+
+        service.addMocks({
+            _triggerEvents: function (ajaxPromise) {
+                ajaxPromise.fail(function (jqXHR, textStatus, errorThrown) {
+                    strictEqual(jqXHR, null, "should pass null as jqXhr to rejected promise");
+                    strictEqual(textStatus, null, "should pass null as textStatus to rejected promise");
+                    strictEqual(errorThrown, offlineErrorThrown, "should pass errorThrown to rejected promise");
+                    start();
+                });
+            }
+        });
+
+        service.callOfflineServiceWithFailure(offlineErrorThrown);
+    });
+
+    test("Successful synchronous offline service call", function () {
         expect(4);
 
         var request = 'foo/bar'.toRequest(),
@@ -318,10 +360,10 @@
             }
         });
 
-        service.callOfflineServiceWithSuccess(offlineResponseNode);
+        service.callOfflineServiceWithSuccessSync(offlineResponseNode);
     });
 
-    test("Failed offline service call", function () {
+    test("Failed synchronous offline service call", function () {
         expect(4);
 
         var request = 'foo/bar'.toRequest(),
@@ -339,6 +381,6 @@
             }
         });
 
-        service.callOfflineServiceWithFailure(offlineErrorThrown);
+        service.callOfflineServiceWithFailureSync(offlineErrorThrown);
     });
 }());
