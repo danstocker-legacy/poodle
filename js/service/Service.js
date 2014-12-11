@@ -23,7 +23,6 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
      * @extends evan.Evented
      */
     poodle.Service = self
-        .setEventSpace(poodle.serviceEventSpace)
         .addConstants(/** @lends poodle.Service */{
             /**
              * Signals the start of a service call.
@@ -124,7 +123,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 this.ajaxOptions = sntls.Collection.create();
 
                 // setting event path to endpoint's event path
-                this.setEventPath(request.endpoint.eventPath);
+                this.setEventSpace(poodle.serviceEventSpace)
+                    .setEventPath(request.endpoint.eventPath);
             },
 
             /**

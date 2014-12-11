@@ -19,7 +19,6 @@ troop.postpone(poodle, 'Endpoint', function () {
      * @extends poodle.Location
      */
     poodle.Endpoint = self
-        .setEventSpace(poodle.serviceEventSpace)
         .addConstants(/** @lends poodle.Endpoint */{
             /**
              * Event root path specifically for endpoints.
@@ -27,6 +26,16 @@ troop.postpone(poodle, 'Endpoint', function () {
              * @type {string}
              */
             EVENT_ROOT_PATH: 'endpoint'
+        })
+        .addMethods(/** @lends poodle.Endpoint# */{
+            /**
+             * @param {sntls.Path} endpointPath
+             * @ignore
+             */
+            init: function (endpointPath) {
+                base.init.call(this, endpointPath);
+                this.setEventSpace(poodle.serviceEventSpace);
+            }
         });
 });
 

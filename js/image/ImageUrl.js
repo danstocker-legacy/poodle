@@ -19,7 +19,6 @@ troop.postpone(poodle, 'ImageUrl', function () {
      * @extends poodle.Location
      */
     poodle.ImageUrl = self
-        .setEventSpace(poodle.imageEventSpace)
         .addConstants(/** @lends poodle.ImageUrl */{
             /**
              * Root path for all image event paths.
@@ -29,6 +28,15 @@ troop.postpone(poodle, 'ImageUrl', function () {
             EVENT_ROOT_PATH: 'image'
         })
         .addMethods(/** @lends poodle.ImageUrl# */{
+            /**
+             * @param {sntls.Path} imagePath
+             * @ignore
+             */
+            init: function (imagePath) {
+                base.init.call(this, imagePath);
+                this.setEventSpace(poodle.imageEventSpace);
+            },
+
             /**
              * Initiates loading of image.
              * @returns {jQuery.Promise}

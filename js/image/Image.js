@@ -22,7 +22,6 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
      * @extends evan.Evented
      */
     poodle.Image = self
-        .setEventSpace(poodle.imageEventSpace)
         .addConstants(/** @lends poodle.ImageUrl */{
             /**
              * Signals that image started loading.
@@ -82,7 +81,9 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
                 /** @type {poodle.ImageUrl} */
                 this.imageUrl = imageUrl;
 
-                this.setEventPath(imageUrl.eventPath);
+                this
+                    .setEventSpace(poodle.imageEventSpace)
+                    .setEventPath(imageUrl.eventPath);
             },
 
             /**
