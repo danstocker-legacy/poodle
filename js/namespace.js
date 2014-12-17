@@ -31,6 +31,12 @@ var sntls = sntls || require('sntls');
 var evan = evan || require('evan');
 
 /**
+ * @function
+ * @see http://api.jquery.com
+ */
+var jQuery = jQuery || require('jquery');
+
+/**
  * Native string class.
  * @name String
  * @class
