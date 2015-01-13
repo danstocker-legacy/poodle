@@ -40,13 +40,13 @@
             promise = {};
 
         poodle.File.addMocks({
-            loadFile: function () {
+            readFile: function () {
                 strictEqual(this.filePath, filePath, "should load file for specified path");
                 return promise;
             }
         });
 
-        strictEqual(filePath.loadFile(), promise, "should return promise from File.loadFile");
+        strictEqual(filePath.readFile(), promise, "should return promise from File.readFile");
 
         poodle.File.removeMocks();
     });

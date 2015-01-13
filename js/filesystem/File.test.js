@@ -59,7 +59,7 @@
                     "should set event's fileData to fetched contents");
             });
 
-        file.loadFile()
+        file.readFile()
             .then(function (event) {
                 ok(event.isA(poodle.FileEvent), "should return promise resolved with the success event");
                 strictEqual(event.filePath, file.filePath, "should pass filePath to promise");
@@ -95,7 +95,7 @@
                     "should set event's fileError to the callback's error");
             });
 
-        file.loadFile()
+        file.readFile()
             .catch(function (event) {
                 ok(event.isA(poodle.FileEvent), "should return promise resolved with the failure event");
                 strictEqual(event.filePath, file.filePath, "should pass filePath to promise");

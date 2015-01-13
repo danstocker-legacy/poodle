@@ -38,11 +38,11 @@ troop.postpone(poodle, 'FilePath', function () {
             },
 
             /**
-             * Initiates loading.
-             * @returns {jQuery.Promise}
+             * Reads the file at the current path.
+             * @returns {Q.Promise}
              */
-            loadFile: function () {
-                return poodle.File.create(this).loadFile();
+            readFile: function () {
+                return poodle.File.create(this).readFile();
             }
         });
 });

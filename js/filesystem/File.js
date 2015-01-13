@@ -17,6 +17,8 @@ troop.postpone(poodle, 'File', function () {
      */
 
     /**
+     * File implements file operations for local files using the Node filesystem (fs) API.
+     * New methods should follow the fs naming conventions.
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -62,7 +64,10 @@ troop.postpone(poodle, 'File', function () {
 
                 evan.Evented.init.call(this);
 
-                /** @type {poodle.FilePath} */
+                /**
+                 * Local path to the current file.
+                 * @type {poodle.FilePath}
+                 */
                 this.filePath = filePath;
 
                 this
@@ -71,9 +76,10 @@ troop.postpone(poodle, 'File', function () {
             },
 
             /**
+             * Reads the current local file, triggering events and returning a promise.
              * @returns {Q.Promise}
              */
-            loadFile: function () {
+            readFile: function () {
                 var that = this,
                     filePath = this.filePath,
                     eventPath = this.eventPath,
