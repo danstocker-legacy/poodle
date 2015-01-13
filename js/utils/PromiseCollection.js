@@ -15,6 +15,7 @@ troop.postpone(poodle, 'PromiseCollection', function (ns, className, /**jQuery*/
     /**
      * The PromiseCollection offers a `Collection`-based solution for joining multiple promises.
      * (The joined promise resolves when *all* promises resolve, and reject when *any* of the promises reject.)
+     * TODO: Rename to JqueryPromiseCollection in 0.4.0.
      * @class
      * @extends sntls.Collection
      * @extends jQuery.Promise
