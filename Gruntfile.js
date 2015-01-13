@@ -18,13 +18,18 @@ module.exports = function (grunt) {
             'js/image/ImageUrl.js',
             'js/image/ImageEvent.js',
             'js/image/Image.js',
+            'js/image/fileSystemEventSpace.js',
+            'js/image/FilePath.js',
+            'js/image/FileEvent.js',
+            'js/image/File.js',
             'js/exports.js'
         ],
 
         test: [
             'js/utils/jsTestDriver.conf',
             'js/service/jsTestDriver.conf',
-            'js/image/jsTestDriver.conf'
+            'js/image/jsTestDriver.conf',
+            'js/filesystem/jsTestDriver.conf'
         ],
 
         globals: {
