@@ -18,10 +18,10 @@ module.exports = function (grunt) {
             'js/image/ImageUrl.js',
             'js/image/ImageEvent.js',
             'js/image/Image.js',
-            'js/image/fileSystemEventSpace.js',
-            'js/image/FilePath.js',
-            'js/image/FileEvent.js',
-            'js/image/File.js',
+            'js/filesystem/fileSystemEventSpace.js',
+            'js/filesystem/FilePath.js',
+            'js/filesystem/FileEvent.js',
+            'js/filesystem/File.js',
             'js/exports.js'
         ],
 
