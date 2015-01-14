@@ -19,6 +19,7 @@ troop.postpone(poodle, 'File', function () {
     /**
      * File implements file operations for local files using the Node filesystem (fs) API.
      * New methods should follow the fs naming conventions.
+     * TODO: Perhaps throttler could be class-level?
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -52,34 +53,13 @@ troop.postpone(poodle, 'File', function () {
              */
             _readFileProxy: function (filename, options, callback) {
                 fs.readFile(filename, options, callback);
-            }
-        })
-        .addMethods(/** @lends poodle.File# */{
-            /**
-             * @param {poodle.FilePath} filePath
-             * @ignore
-             */
-            init: function (filePath) {
-                dessert.isLocation(filePath, "Invalid image URL");
-
-                evan.Evented.init.call(this);
-
-                /**
-                 * Local path to the current file.
-                 * @type {poodle.FilePath}
-                 */
-                this.filePath = filePath;
-
-                this
-                    .setEventSpace(poodle.fileSystemEventSpace)
-                    .setEventPath(filePath.eventPath);
             },
 
             /**
-             * Reads the current local file, triggering events and returning a promise.
              * @returns {Q.Promise}
+             * @private
              */
-            readFile: function () {
+            _readFile: function () {
                 var that = this,
                     filePath = this.filePath,
                     eventPath = this.eventPath,
@@ -109,6 +89,40 @@ troop.postpone(poodle, 'File', function () {
                 });
 
                 return deferred.promise;
+            }
+        })
+        .addMethods(/** @lends poodle.File# */{
+            /**
+             * @param {poodle.FilePath} filePath
+             * @ignore
+             */
+            init: function (filePath) {
+                dessert.isLocation(filePath, "Invalid image URL");
+
+                evan.Evented.init.call(this);
+
+                this.elevateMethod('_readFile');
+
+                /**
+                 * Local path to the current file.
+                 * @type {poodle.FilePath}
+                 */
+                this.filePath = filePath;
+
+                /** @type {poodle.Throttler} */
+                this.readFileThrottler = this._readFile.toThrottler();
+
+                this
+                    .setEventSpace(poodle.fileSystemEventSpace)
+                    .setEventPath(filePath.eventPath);
+            },
+
+            /**
+             * Reads the current local file, triggering events and returning a promise.
+             * @returns {Q.Promise}
+             */
+            readFile: function () {
+                return this.readFileThrottler.runThrottled(this.filePath.toString());
             }
         });
 }, jQuery);

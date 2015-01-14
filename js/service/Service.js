@@ -19,6 +19,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
      * Implements an API to call the service in online or offline, asynchronous or synchronous modes.
      * Triggers events upon start, success, and failure of service calls.
      * TODO: Replace jQuery promise with Q (0.4.0).
+     * TODO: Perhaps throttler could be class-level?
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -162,7 +163,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 this.ajaxOptions = sntls.Collection.create();
 
                 /** @type {poodle.Throttler} */
-                this.serviceThrottler = this._callService.toThrottler();
+                this.callServiceThrottler = this._callService.toThrottler();
 
                 // setting event path to endpoint's event path
                 this.setEventSpace(poodle.serviceEventSpace)
@@ -249,7 +250,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 var request = this.request,
                     requestId = request.toString();
 
-                return this.serviceThrottler.runThrottled(requestId, ajaxOptions);
+                return this.callServiceThrottler.runThrottled(requestId, ajaxOptions);
             },
 
             /**
