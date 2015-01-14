@@ -43,6 +43,13 @@ troop.postpone(poodle, 'FilePath', function () {
              */
             readFile: function () {
                 return poodle.File.create(this).readFile();
+            },
+
+            /**
+             * @returns {*}
+             */
+            readFileSync: function () {
+                return poodle.File.create(this).readFileSync();
             }
         });
 });

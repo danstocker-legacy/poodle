@@ -33,7 +33,7 @@
             "should set locationPath to the one that was converted");
     });
 
-    test("Image loading", function () {
+    test("File loading", function () {
         expect(2);
 
         var filePath = 'foo/bar'.toFilePath(),
@@ -47,6 +47,24 @@
         });
 
         strictEqual(filePath.readFile(), promise, "should return promise from File.readFile");
+
+        poodle.File.removeMocks();
+    });
+
+    test("Synchronous file loading", function () {
+        expect(2);
+
+        var filePath = 'foo/bar'.toFilePath(),
+            promise = {};
+
+        poodle.File.addMocks({
+            readFileSync: function () {
+                strictEqual(this.filePath, filePath, "should load file for specified path synchronously");
+                return promise;
+            }
+        });
+
+        strictEqual(filePath.readFileSync(), promise, "should return promise from File.readFileSync");
 
         poodle.File.removeMocks();
     });

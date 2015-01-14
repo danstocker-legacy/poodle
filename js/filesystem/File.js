@@ -52,7 +52,17 @@ troop.postpone(poodle, 'File', function () {
              * @private
              */
             _readFileProxy: function (filename, options, callback) {
-                fs.readFile(filename, options, callback);
+                return fs.readFile(filename, options, callback);
+            },
+
+            /**
+             * @param {string} filename
+             * @param {object} options
+             * @returns {*}
+             * @private
+             */
+            _readFileSyncProxy: function (filename, options) {
+                return fs.readFileSync(filename, options);
             },
 
             /**
@@ -123,6 +133,36 @@ troop.postpone(poodle, 'File', function () {
              */
             readFile: function () {
                 return this.readFileThrottler.runThrottled(this.filePath.toString());
+            },
+
+            /**
+             * Reads the current local file synchronously, triggering events, and returning the buffer.
+             * @returns {*}
+             */
+            readFileSync: function () {
+                var filePath = this.filePath,
+                    eventPath = this.eventPath,
+                    data;
+
+                this.spawnEvent(this.EVENT_FILE_LOAD_START)
+                    .setFilePath(filePath)
+                    .triggerSync(eventPath);
+
+                try {
+                    data = this._readFileSyncProxy(filePath.toString(), null);
+
+                    this.spawnEvent(this.EVENT_FILE_LOAD_SUCCESS)
+                        .setFilePath(filePath)
+                        .setFileData(data)
+                        .triggerSync(eventPath);
+                } catch (e) {
+                    this.spawnEvent(this.EVENT_FILE_LOAD_FAILURE)
+                        .setFilePath(filePath)
+                        .setFileError(e)
+                        .triggerSync(eventPath);
+                }
+
+                return data;
             }
         });
 }, jQuery);
