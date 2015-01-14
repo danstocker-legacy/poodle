@@ -61,8 +61,8 @@ troop.postpone(poodle, 'Throttler', function () {
                         promise.always(function () {
                             that.promiseRegistry.deleteItem(promiseId);
                         });
-                    } else if (promise.finally) {
-                        promise.finally(function () {
+                    } else if (promise['finally']) {
+                        promise['finally'](function () {
                             that.promiseRegistry.deleteItem(promiseId);
                         });
                     }
