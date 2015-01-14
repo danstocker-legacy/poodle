@@ -9,6 +9,7 @@ module.exports = function (grunt) {
             'js/utils/Promise.js',
             'js/utils/PromiseCollection.js',
             'js/utils/Location.js',
+            'js/utils/Throttler.js',
             'js/service/serviceEventSpace.js',
             'js/service/Endpoint.js',
             'js/service/Request.js',

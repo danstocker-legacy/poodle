@@ -18,6 +18,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
      * The Service class represents a service associated with a specific request.
      * Implements an API to call the service in online or offline, asynchronous or synchronous modes.
      * Triggers events upon start, success, and failure of service calls.
+     * TODO: Replace jQuery promise with Q (0.4.0).
      * @class
      * @extends troop.Base
      * @extends evan.Evented
@@ -46,15 +47,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * Default timeout for service calls in [ms].
              * @constant
              */
-            SERVICE_TIMEOUT: 30000,
-
-            /**
-             * Registry of service calls that are in progress. Subsequent attempts to call identical services do not
-             * dispatch actual ajax requests, but return the promise for the one in progress.
-             * @type {sntls.Collection}
-             * @constant
-             */
-            promiseRegistry: sntls.Collection.create()
+            SERVICE_TIMEOUT: 30000
         })
         .addPrivateMethods(/** @lends poodle.Service# */{
             /**
@@ -100,6 +93,50 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     });
 
                 return ajaxPromise;
+            },
+
+            /**
+             * @param ajaxOptions
+             * @returns {jQuery.Promise}
+             * @private
+             */
+            _callService: function (ajaxOptions) {
+                var request = this.request,
+                    requestBody,
+                    requestHeaders;
+
+                switch (request.bodyFormat) {
+                case 'json':
+                    requestBody = JSON.stringify(request.params.items);
+                    requestHeaders = request.headers.clone()
+                        .setItem('Content-Type', 'application/json')
+                        .items;
+                    break;
+                default:
+                case 'default':
+                    requestBody = request.params.items;
+                    requestHeaders = request.headers.items;
+                }
+
+                // merging default ajax options with custom options
+                // custom options taking precedence
+                ajaxOptions = sntls.Collection.create(ajaxOptions)
+                    .mergeWith(this.ajaxOptions)
+                    .mergeWith(sntls.Collection.create({
+                        dataType: "json",
+                        type    : request.httpMethod,
+                        url     : request.endpoint.toString(),
+                        headers : requestHeaders,
+                        data    : requestBody,
+                        timeout : this.SERVICE_TIMEOUT
+                    }))
+                    .items;
+
+                var promise = this._ajaxProxy(ajaxOptions);
+
+                this._triggerEvents(promise);
+
+                return promise;
             }
         })
         .addMethods(/** @lends poodle.Service# */{
@@ -112,6 +149,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
                 evan.Evented.init.call(this);
 
+                this.elevateMethod('_callService');
+
                 /** @type {poodle.Request} */
                 this.request = request;
 
@@ -121,6 +160,9 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                  * @type {sntls.Collection}
                  */
                 this.ajaxOptions = sntls.Collection.create();
+
+                /** @type {poodle.Throttler} */
+                this.serviceThrottler = this._callService.toThrottler();
 
                 // setting event path to endpoint's event path
                 this.setEventSpace(poodle.serviceEventSpace)
@@ -204,56 +246,10 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             callService: function (ajaxOptions) {
                 dessert.isObjectOptional(ajaxOptions, "Invalid ajax options");
 
-                var that = this,
-                    request = this.request,
-                    requestId = request.toString(),
-                    promise = this.promiseRegistry.getItem(requestId),
-                    requestBody,
-                    requestHeaders;
+                var request = this.request,
+                    requestId = request.toString();
 
-                if (!promise) {
-                    switch (request.bodyFormat) {
-                    case 'json':
-                        requestBody = JSON.stringify(request.params.items);
-                        requestHeaders = request.headers.clone()
-                            .setItem('Content-Type', 'application/json')
-                            .items;
-                        break;
-                    default:
-                    case 'default':
-                        requestBody = request.params.items;
-                        requestHeaders = request.headers.items;
-                    }
-
-                    // merging default ajax options with custom options
-                    // custom options taking precedence
-                    ajaxOptions = sntls.Collection.create(ajaxOptions)
-                        .mergeWith(this.ajaxOptions)
-                        .mergeWith(sntls.Collection.create({
-                            dataType: "json",
-                            type    : request.httpMethod,
-                            url     : request.endpoint.toString(),
-                            headers : requestHeaders,
-                            data    : requestBody,
-                            timeout : this.SERVICE_TIMEOUT
-                        }))
-                        .items;
-
-                    promise = this._ajaxProxy(ajaxOptions);
-
-                    // storing promise in registry
-                    this.promiseRegistry.setItem(requestId, promise);
-
-                    // calling service and
-                    this._triggerEvents(promise);
-
-                    promise.always(function () {
-                        // removing promise from registry
-                        that.promiseRegistry.deleteItem(requestId);
-                    });
-                }
-
-                return promise;
+                return this.serviceThrottler.runThrottled(requestId, ajaxOptions);
             },
 
             /**
