@@ -24,7 +24,7 @@ troop.postpone(poodle, 'File', function () {
      * @extends evan.Evented
      */
     poodle.File = self
-        .addConstants(/** @lends poodle.ImageUrl */{
+        .addConstants(/** @lends poodle.File */{
             /**
              * Signals that file started loading.
              * @constant
