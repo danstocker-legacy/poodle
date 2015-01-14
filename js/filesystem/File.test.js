@@ -44,13 +44,13 @@
         });
 
         'foo/bar'.toFilePath()
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_START, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_START, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load start event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.filePath, file.filePath,
                     "should set event's filePath to file's filePath");
             })
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_SUCCESS, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_SUCCESS, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load success event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.filePath, file.filePath,
@@ -86,7 +86,7 @@
         });
 
         'foo/bar'.toFilePath()
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_FAILURE, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_FAILURE, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load success event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.filePath, file.filePath,
@@ -120,13 +120,13 @@
         });
 
         'foo/bar'.toFilePath()
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_START, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_START, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load start event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.filePath, file.filePath,
                     "should set event's filePath to file's filePath");
             })
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_SUCCESS, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_SUCCESS, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load success event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.filePath, file.filePath,
@@ -155,7 +155,7 @@
         });
 
         'foo/bar'.toFilePath()
-            .subscribeTo(poodle.File.EVENT_FILE_LOAD_FAILURE, function (event) {
+            .subscribeTo(poodle.File.EVENT_FILE_READ_FAILURE, function (event) {
                 ok(event.isA(poodle.FileEvent), "should trigger file load success event");
                 equal(event.originalPath.toString(), 'file>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.filePath, file.filePath,

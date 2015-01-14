@@ -30,19 +30,19 @@ troop.postpone(poodle, 'File', function () {
              * Signals that file started loading.
              * @constant
              */
-            EVENT_FILE_LOAD_START: 'file-load-start',
+            EVENT_FILE_READ_START: 'file-read-start',
 
             /**
              * Signals that image has finished loading.
              * @constant
              */
-            EVENT_FILE_LOAD_SUCCESS: 'file-load-success',
+            EVENT_FILE_READ_SUCCESS: 'file-read-success',
 
             /**
              * Signals that image failed to load.
              * @constant
              */
-            EVENT_FILE_LOAD_FAILURE: 'file-load-failure'
+            EVENT_FILE_READ_FAILURE: 'file-read-failure'
         })
         .addPrivateMethods(/** @lends poodle.File# */{
             /**
@@ -76,20 +76,20 @@ troop.postpone(poodle, 'File', function () {
                     deferred = Q.defer(),
                     event;
 
-                this.spawnEvent(this.EVENT_FILE_LOAD_START)
+                this.spawnEvent(this.EVENT_FILE_READ_START)
                     .setFilePath(filePath)
                     .triggerSync(eventPath);
 
                 this._readFileProxy(filePath.toString(), null, function (err, data) {
                     if (err) {
-                        event = that.spawnEvent(that.EVENT_FILE_LOAD_FAILURE)
+                        event = that.spawnEvent(that.EVENT_FILE_READ_FAILURE)
                             .setFilePath(filePath)
                             .setFileError(err)
                             .triggerSync(eventPath);
 
                         deferred.reject(event);
                     } else {
-                        event = that.spawnEvent(that.EVENT_FILE_LOAD_SUCCESS)
+                        event = that.spawnEvent(that.EVENT_FILE_READ_SUCCESS)
                             .setFilePath(filePath)
                             .setFileData(data)
                             .triggerSync(eventPath);
@@ -144,19 +144,19 @@ troop.postpone(poodle, 'File', function () {
                     eventPath = this.eventPath,
                     data;
 
-                this.spawnEvent(this.EVENT_FILE_LOAD_START)
+                this.spawnEvent(this.EVENT_FILE_READ_START)
                     .setFilePath(filePath)
                     .triggerSync(eventPath);
 
                 try {
                     data = this._readFileSyncProxy(filePath.toString(), null);
 
-                    this.spawnEvent(this.EVENT_FILE_LOAD_SUCCESS)
+                    this.spawnEvent(this.EVENT_FILE_READ_SUCCESS)
                         .setFilePath(filePath)
                         .setFileData(data)
                         .triggerSync(eventPath);
                 } catch (e) {
-                    this.spawnEvent(this.EVENT_FILE_LOAD_FAILURE)
+                    this.spawnEvent(this.EVENT_FILE_READ_FAILURE)
                         .setFilePath(filePath)
                         .setFileError(e)
                         .triggerSync(eventPath);
