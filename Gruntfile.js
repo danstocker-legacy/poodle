@@ -8,6 +8,7 @@ module.exports = function (grunt) {
             'js/utils/Deferred.js',
             'js/utils/Promise.js',
             'js/utils/PromiseCollection.js',
+            'js/utils/QPromiseCollection.js',
             'js/utils/Location.js',
             'js/utils/Throttler.js',
             'js/service/serviceEventSpace.js',
