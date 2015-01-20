@@ -31,7 +31,7 @@
             });
     });
 
-    test("Failure with one retry", function () {
+    asyncTest("Failure with one retry", function () {
         expect(3);
 
         poodle.PromiseLoop
@@ -41,10 +41,11 @@
             }, 1)
             .fail(function (arg) {
                 equal(arg, 'foo', "should return a failed promise");
+                start();
             });
     });
 
-    test("Failure with retries and notifications", function () {
+    asyncTest("Failure with retries and notifications", function () {
         expect(3);
 
         var promises = [
@@ -63,6 +64,7 @@
             })
             .done(function (arg) {
                 equal(arg, 'bar', "should return first resolved promise");
+                start();
             });
     });
 }());

@@ -27,6 +27,7 @@
 
         strictEqual(service.request, request, "should set request property");
         equal(service.retryCount, 0, "should set retryCount property to 0");
+        equal(service.retryDelay, 1000, "should set retryDelay property to 1000 [ms]");
         strictEqual(service.eventPath, service.request.endpoint.eventPath, "should set eventPath property");
     });
 
@@ -51,6 +52,21 @@
 
         strictEqual(service.setRetryCount(3), service, "should be chainable");
         equal(service.retryCount, 3, "should set retryCount property");
+    });
+
+    test("Retry count setter", function () {
+        var service = 'foo/bar'.toRequest().toService();
+
+        raises(function () {
+            service.setRetryDelay();
+        }, "should raise exception on missing arguments");
+
+        raises(function () {
+            service.setRetryDelay('foo');
+        }, "should raise exception on invalid arguments");
+
+        strictEqual(service.setRetryDelay(3000), service, "should be chainable");
+        equal(service.retryDelay, 3000, "should set retryDelay property");
     });
 
     test("Ajax option addition", function () {
@@ -94,7 +110,7 @@
     });
 
     test("Calling service", function () {
-        expect(6);
+        expect(7);
 
         var request = 'foo/bar'.toRequest(),
             service = request.toService()
@@ -124,8 +140,9 @@
         });
 
         poodle.PromiseLoop.addMocks({
-            retryOnFail: function (handler, retryCount) {
+            retryOnFail: function (handler, retryCount, retryDelay) {
                 equal(retryCount, 3, "should pass retry count to promise loop");
+                equal(retryDelay, 1000, "should pass retry delay to promise loop");
                 return handler();
             }
         });

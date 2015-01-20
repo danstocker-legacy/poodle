@@ -19,10 +19,13 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
             /**
              * Runs handler and re-tries the specified number of times if the promise fails.
              * @param {function} handler Expected to return a jQuery promise.
-             * @param {number} [retryCount]
+             * @param {number} [retryCount] Number of attempts after first failure.
+             * @param {number} [retryDelay] Delay between retries in ms.
              * @return {jQuery.Promise}
              */
-            retryOnFail: function (handler, retryCount) {
+            retryOnFail: function (handler, retryCount, retryDelay) {
+                retryDelay = retryDelay || 0;
+
                 var deferred = $.Deferred(),
                     isRetryPrevented = false,
                     i = retryCount || 0;
@@ -61,7 +64,7 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
                                     i--;
 
                                     // re-trying
-                                    next();
+                                    setTimeout(next, retryDelay);
                                 }
                             } else {
                                 // no more retries left, rejecting returned promise

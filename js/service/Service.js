@@ -144,7 +144,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 var promise = poodle.PromiseLoop
                     .retryOnFail(function () {
                         return that._ajaxProxy(ajaxOptions);
-                    }, this.retryCount)
+                    }, this.retryCount, this.retryDelay)
                     .progress(function (stop, jqXHR, textStatus, errorThrown) {
                         that.spawnEvent(that.EVENT_SERVICE_RETRY)
                             .setRequest(request)
@@ -189,6 +189,12 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 this.retryCount = 0;
 
                 /**
+                 * Number of milliseconds between retries.
+                 * @type {number}
+                 */
+                this.retryDelay = 1000;
+
+                /**
                  * Custom options to be passed to jQuery.ajax().
                  * Options stored in here override the default ajax options, and thus might break the ajax call.
                  * @type {sntls.Collection}
@@ -211,6 +217,17 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             setRetryCount: function (retryCount) {
                 dessert.isNumber(retryCount, "Invalid retry count");
                 this.retryCount = retryCount;
+                return this;
+            },
+
+            /**
+             * Sets delay in milliseconds between consecutive attempts.
+             * @param {number} retryDelay
+             * @returns {poodle.Service}
+             */
+            setRetryDelay: function (retryDelay) {
+                dessert.isNumber(retryDelay, "Invalid retry count");
+                this.retryDelay = retryDelay;
                 return this;
             },
 
