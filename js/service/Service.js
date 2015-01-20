@@ -33,6 +33,12 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             EVENT_SERVICE_START: 'service-start',
 
             /**
+             * Signals that a service call was attempted after failure.
+             * @constant
+             */
+            EVENT_SERVICE_RETRY: 'service-retry',
+
+            /**
              * Signals the successful return of a service call.
              * @constant
              */
@@ -98,11 +104,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
             /**
              * @param {object} ajaxOptions
+             * @param {number} retryCount
              * @returns {jQuery.Promise}
              * @private
              */
-            _callService: function (ajaxOptions) {
-                var request = this.request,
+            _callService: function (ajaxOptions, retryCount) {
+                var that = this,
+                    request = this.request,
+                    eventPath = this.eventPath,
                     requestBody,
                     requestHeaders;
 
@@ -133,7 +142,13 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     }))
                     .items;
 
-                var promise = this._ajaxProxy(ajaxOptions);
+                var promise = poodle.PromiseLoop.retryOnFail(function () {
+                    return that._ajaxProxy(ajaxOptions);
+                }, retryCount, function () {
+                    that.spawnEvent(that.EVENT_SERVICE_RETRY)
+                        .setRequest(request)
+                        .triggerSync(eventPath);
+                });
 
                 this._triggerEvents(promise);
 
@@ -150,7 +165,9 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
                 evan.Evented.init.call(this);
 
-                this.elevateMethod('_callService');
+                this.elevateMethods(
+                    '_ajaxProxy',
+                    '_callService');
 
                 /**
                  * Request associated with the service call.
@@ -245,15 +262,17 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * if an identical service call is currently in progress.
              * @param {object} [ajaxOptions] Custom options for jQuery ajax.
              * In case of conflict, custom option overrides default.
+             * @param {number} retryCount
              * @returns {jQuery.Promise}
              */
-            callService: function (ajaxOptions) {
+            callService: function (ajaxOptions, retryCount) {
                 dessert.isObjectOptional(ajaxOptions, "Invalid ajax options");
 
                 var request = this.request,
                     requestId = request.toString();
 
-                return this.callServiceThrottler.runThrottled(requestId, ajaxOptions);
+                return this.callServiceThrottler
+                    .runThrottled(requestId, ajaxOptions, retryCount);
             },
 
             /**
@@ -284,14 +303,15 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * // loading static JSON file
              * 'files/data.json'.toRequest().toService().callServiceSync();
              * @param {object} [ajaxOptions] Custom options for jQuery ajax.
+             * @param {number} [retryCount]
              * @returns {jQuery.Promise}
              */
-            callServiceSync: function (ajaxOptions) {
+            callServiceSync: function (ajaxOptions, retryCount) {
                 ajaxOptions = sntls.Collection.create({async: false})
                     .mergeWith(sntls.Collection.create(ajaxOptions))
                     .items;
 
-                return this.callService(ajaxOptions);
+                return this.callService(ajaxOptions, retryCount);
             }
         });
 }, jQuery);

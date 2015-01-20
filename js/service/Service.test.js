@@ -78,7 +78,7 @@
     });
 
     test("Calling service", function () {
-        expect(5);
+        expect(6);
 
         var request = 'foo/bar'.toRequest(),
             service = request.toService(),
@@ -106,6 +106,13 @@
             }
         });
 
+        poodle.PromiseLoop.addMocks({
+            retryOnFail: function (handler, retryCount) {
+                equal(retryCount, 3, "should pass retry count to promise loop");
+                return handler();
+            }
+        });
+
         poodle.Throttler.promiseRegistry.addMocks({
             setItem: function (key, value) {
                 equal(key, request.toString(), "should set promise in registry");
@@ -113,8 +120,9 @@
             }
         });
 
-        strictEqual(service.callService(), promise, "should return promise from ajax call");
+        strictEqual(service.callService({}, 3), promise, "should return promise from ajax call");
 
+        poodle.PromiseLoop.removeMocks();
         poodle.Throttler.promiseRegistry.removeMocks();
     });
 
