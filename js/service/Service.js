@@ -340,11 +340,14 @@ troop.postpone(poodle, 'logServiceEvents', function () {
             .subscribeTo(poodle.Service.EVENT_SERVICE_START, function (event) {
                 console.info("service start", event.request.endpoint.toString(), event);
             })
+            .subscribeTo(poodle.Service.EVENT_SERVICE_RETRY, function (event) {
+                console.warn("service retry", event.request.endpoint.toString(), event);
+            })
             .subscribeTo(poodle.Service.EVENT_SERVICE_SUCCESS, function (event) {
                 console.info("service success", event.request.endpoint.toString(), event);
             })
             .subscribeTo(poodle.Service.EVENT_SERVICE_FAILURE, function (event) {
-                console.info("service failed", event.request.endpoint.toString(), event);
+                console.warn("service failed", event.request.endpoint.toString(), event);
             });
     };
 });
