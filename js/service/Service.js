@@ -146,12 +146,16 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     .retryOnFail(function () {
                         return that._ajaxProxy(ajaxOptions);
                     }, retryCount)
-                    .progress(function (type) {
-                        if (type === poodle.PromiseLoop.NOTIFICATION_TYPE_RETRY) {
-                            that.spawnEvent(that.EVENT_SERVICE_RETRY)
-                                .setRequest(request)
-                                .triggerSync(eventPath);
-                        }
+                    .progress(function (stop, jqXHR, textStatus, errorThrown) {
+                        that.spawnEvent(that.EVENT_SERVICE_RETRY)
+                            .setRequest(request)
+                            .setResponseNode(errorThrown)
+                            .setJqXhr(jqXHR)
+                            // TODO: Replaces existing payload.
+                            .setPayload({
+                                stop: stop
+                            })
+                            .triggerSync(eventPath);
                     });
 
                 this._triggerEvents(promise);

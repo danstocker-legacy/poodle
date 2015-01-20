@@ -45,28 +45,24 @@
     });
 
     test("Failure with retries and notifications", function () {
-        expect(2);
+        expect(3);
 
         var promises = [
                 $.Deferred().reject('foo'),
                 $.Deferred().resolve('bar')
             ],
-            i = 0,
-            retryIndices = [];
+            i = 0;
 
         poodle.PromiseLoop
             .retryOnFail(function () {
                 return promises[i++];
             }, 2)
-            .progress(function (type, retryIndex) {
-                retryIndices.push([type, retryIndex]);
+            .progress(function (stop, arg) {
+                equal(typeof stop, 'function', "should indicate progress");
+                equal(arg, 'foo', "should pass rejection arguments to progress handler");
             })
             .done(function (arg) {
                 equal(arg, 'bar', "should return first resolved promise");
             });
-
-        deepEqual(retryIndices, [
-            ['notification-retry', 0]
-        ], "should call retry handler passing retry index");
     });
 }());

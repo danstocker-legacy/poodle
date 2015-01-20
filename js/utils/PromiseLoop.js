@@ -3,7 +3,8 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
     "use strict";
 
     var base = troop.Base,
-        self = base.extend();
+        self = base.extend(),
+        slice = Array.prototype.slice;
 
     /**
      * @class
@@ -22,10 +23,16 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
              * @return {jQuery.Promise}
              */
             retryOnFail: function (handler, retryCount) {
-                var that = this,
-                    deferred = $.Deferred(),
+                var deferred = $.Deferred(),
+                    isRetryPrevented = false,
                     i = retryCount || 0;
 
+                /** Prevents further retries. */
+                function stop() {
+                    isRetryPrevented = true;
+                }
+
+                // iterating asynchronously
                 (function next() {
                     handler()
                         // resolving returned promise when callback was successful
@@ -33,17 +40,29 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
 
                         // processing failed callback
                         .fail(function () {
+                            var args;
+
                             if (i) {
                                 // there are retries left
+                                // adding prevention callback to notification arguments
+                                args = slice.call(arguments);
+                                args.unshift(stop);
 
                                 // signaling retry
-                                deferred.notify(that.NOTIFICATION_TYPE_RETRY, retryCount - i);
+                                deferred.notify.apply(deferred, args);
 
-                                // decreasing retry counter
-                                i--;
+                                if (isRetryPrevented) {
+                                    // retries are prevented
+                                    // rejecting promise
+                                    deferred.reject.apply(deferred, arguments);
+                                } else {
+                                    // retries continue
+                                    // decreasing retry counter
+                                    i--;
 
-                                // re-trying
-                                next();
+                                    // re-trying
+                                    next();
+                                }
                             } else {
                                 // no more retries left, rejecting returned promise
                                 deferred.reject.apply(deferred, arguments);
