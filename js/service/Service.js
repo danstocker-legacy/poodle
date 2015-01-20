@@ -104,11 +104,10 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
             /**
              * @param {object} ajaxOptions
-             * @param {number} retryCount
              * @returns {jQuery.Promise}
              * @private
              */
-            _callService: function (ajaxOptions, retryCount) {
+            _callService: function (ajaxOptions) {
                 var that = this,
                     request = this.request,
                     eventPath = this.eventPath,
@@ -145,7 +144,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 var promise = poodle.PromiseLoop
                     .retryOnFail(function () {
                         return that._ajaxProxy(ajaxOptions);
-                    }, retryCount)
+                    }, this.retryCount)
                     .progress(function (stop, jqXHR, textStatus, errorThrown) {
                         that.spawnEvent(that.EVENT_SERVICE_RETRY)
                             .setRequest(request)
@@ -184,6 +183,12 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 this.request = request;
 
                 /**
+                 * Number of times a failed service will be re-attempted.
+                 * @type {number}
+                 */
+                this.retryCount = 0;
+
+                /**
                  * Custom options to be passed to jQuery.ajax().
                  * Options stored in here override the default ajax options, and thus might break the ajax call.
                  * @type {sntls.Collection}
@@ -196,6 +201,17 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                 // setting event path to endpoint's event path
                 this.setEventSpace(poodle.serviceEventSpace)
                     .setEventPath(request.endpoint.eventPath);
+            },
+
+            /**
+             * Sets how many times a failed service call will be re-attempted.
+             * @param {number} retryCount
+             * @returns {poodle.Service}
+             */
+            setRetryCount: function (retryCount) {
+                dessert.isNumber(retryCount, "Invalid retry count");
+                this.retryCount = retryCount;
+                return this;
             },
 
             /**
@@ -270,17 +286,16 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * if an identical service call is currently in progress.
              * @param {object} [ajaxOptions] Custom options for jQuery ajax.
              * In case of conflict, custom option overrides default.
-             * @param {number} [retryCount] Number of times the call is to be re-tried after first failure.
              * @returns {jQuery.Promise}
              */
-            callService: function (ajaxOptions, retryCount) {
+            callService: function (ajaxOptions) {
                 dessert.isObjectOptional(ajaxOptions, "Invalid ajax options");
 
                 var request = this.request,
                     requestId = request.toString();
 
                 return this.callServiceThrottler
-                    .runThrottled(requestId, ajaxOptions, retryCount);
+                    .runThrottled(requestId, ajaxOptions);
             },
 
             /**
@@ -311,15 +326,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * // loading static JSON file
              * 'files/data.json'.toRequest().toService().callServiceSync();
              * @param {object} [ajaxOptions] Custom options for jQuery ajax.
-             * @param {number} [retryCount]
              * @returns {jQuery.Promise}
              */
-            callServiceSync: function (ajaxOptions, retryCount) {
+            callServiceSync: function (ajaxOptions) {
                 ajaxOptions = sntls.Collection.create({async: false})
                     .mergeWith(sntls.Collection.create(ajaxOptions))
                     .items;
 
-                return this.callService(ajaxOptions, retryCount);
+                return this.callService(ajaxOptions);
             }
         });
 }, jQuery);

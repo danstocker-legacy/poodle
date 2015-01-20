@@ -26,6 +26,7 @@
             service = poodle.Service.create(request);
 
         strictEqual(service.request, request, "should set request property");
+        equal(service.retryCount, 0, "should set retryCount property to 0");
         strictEqual(service.eventPath, service.request.endpoint.eventPath, "should set eventPath property");
     });
 
@@ -35,6 +36,21 @@
 
         ok(service.isA(poodle.Service), "should return Service instance");
         strictEqual(service.request, request, "should set request property");
+    });
+
+    test("Retry count setter", function () {
+        var service = 'foo/bar'.toRequest().toService();
+
+        raises(function () {
+            service.setRetryCount();
+        }, "should raise exception on missing arguments");
+
+        raises(function () {
+            service.setRetryCount('foo');
+        }, "should raise exception on invalid arguments");
+
+        strictEqual(service.setRetryCount(3), service, "should be chainable");
+        equal(service.retryCount, 3, "should set retryCount property");
     });
 
     test("Ajax option addition", function () {
@@ -81,7 +97,8 @@
         expect(6);
 
         var request = 'foo/bar'.toRequest(),
-            service = request.toService(),
+            service = request.toService()
+                .setRetryCount(3),
             promise = $.Deferred().promise();
 
         raises(function () {
@@ -120,7 +137,7 @@
             }
         });
 
-        strictEqual(service.callService({}, 3), promise, "should return promise from ajax call");
+        strictEqual(service.callService(), promise, "should return promise from ajax call");
 
         poodle.PromiseLoop.removeMocks();
         poodle.Throttler.promiseRegistry.removeMocks();
