@@ -10,16 +10,20 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
      * @extends troop.Base
      */
     poodle.PromiseLoop = self
+        .addConstants(/** @lends poodle.PromiseLoop */{
+            /** @constant */
+            NOTIFICATION_TYPE_RETRY: 'notification-retry'
+        })
         .addMethods(/** @lends poodle.PromiseLoop */{
             /**
              * Runs handler and re-tries the specified number of times if the promise fails.
              * @param {function} handler Expected to return a jQuery promise.
              * @param {number} [retryCount]
-             * @param {function} [retryHandler] Function to be ran before retrying
              * @return {jQuery.Promise}
              */
-            retryOnFail: function (handler, retryCount, retryHandler) {
-                var deferred = $.Deferred(),
+            retryOnFail: function (handler, retryCount) {
+                var that = this,
+                    deferred = $.Deferred(),
                     i = retryCount || 0;
 
                 (function next() {
@@ -32,10 +36,8 @@ troop.postpone(poodle, 'PromiseLoop', function (ns, className, /**jQuery*/$) {
                             if (i) {
                                 // there are retries left
 
-                                if (retryHandler) {
-                                    // calling retry handler with retry index
-                                    retryHandler(retryCount - i);
-                                }
+                                // signaling retry
+                                deferred.notify(that.NOTIFICATION_TYPE_RETRY, retryCount - i);
 
                                 // decreasing retry counter
                                 i--;

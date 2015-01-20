@@ -142,13 +142,17 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     }))
                     .items;
 
-                var promise = poodle.PromiseLoop.retryOnFail(function () {
-                    return that._ajaxProxy(ajaxOptions);
-                }, retryCount, function () {
-                    that.spawnEvent(that.EVENT_SERVICE_RETRY)
-                        .setRequest(request)
-                        .triggerSync(eventPath);
-                });
+                var promise = poodle.PromiseLoop
+                    .retryOnFail(function () {
+                        return that._ajaxProxy(ajaxOptions);
+                    }, retryCount)
+                    .progress(function (type) {
+                        if (type === poodle.PromiseLoop.NOTIFICATION_TYPE_RETRY) {
+                            that.spawnEvent(that.EVENT_SERVICE_RETRY)
+                                .setRequest(request)
+                                .triggerSync(eventPath);
+                        }
+                    });
 
                 this._triggerEvents(promise);
 
@@ -262,7 +266,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * if an identical service call is currently in progress.
              * @param {object} [ajaxOptions] Custom options for jQuery ajax.
              * In case of conflict, custom option overrides default.
-             * @param {number} retryCount
+             * @param {number} [retryCount] Number of times the call is to be re-tried after first failure.
              * @returns {jQuery.Promise}
              */
             callService: function (ajaxOptions, retryCount) {

@@ -5,7 +5,7 @@
 
     module("PromiseLoop");
 
-    test("Retry on fail with a resolved promise", function () {
+    test("Successful call", function () {
         expect(2);
 
         poodle.PromiseLoop
@@ -18,7 +18,7 @@
             });
     });
 
-    test("Retry on fail with no retries", function () {
+    test("Failure with no retries", function () {
         expect(2);
 
         poodle.PromiseLoop
@@ -31,7 +31,7 @@
             });
     });
 
-    test("Retry on fail with no retry handler", function () {
+    test("Failure with one retry", function () {
         expect(3);
 
         poodle.PromiseLoop
@@ -44,7 +44,7 @@
             });
     });
 
-    test("Retry on fail with retry handler", function () {
+    test("Failure with retries and notifications", function () {
         expect(2);
 
         var promises = [
@@ -57,13 +57,16 @@
         poodle.PromiseLoop
             .retryOnFail(function () {
                 return promises[i++];
-            }, 2, function (retryIndex) {
-                retryIndices.push(retryIndex);
+            }, 2)
+            .progress(function (type, retryIndex) {
+                retryIndices.push([type, retryIndex]);
             })
             .done(function (arg) {
                 equal(arg, 'bar', "should return first resolved promise");
             });
 
-        deepEqual(retryIndices, [0], "should call retry handler passing retry index");
+        deepEqual(retryIndices, [
+            ['notification-retry', 0]
+        ], "should call retry handler passing retry index");
     });
 }());
