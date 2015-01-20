@@ -97,7 +97,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             },
 
             /**
-             * @param ajaxOptions
+             * @param {object} ajaxOptions
              * @returns {jQuery.Promise}
              * @private
              */
@@ -152,7 +152,10 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
 
                 this.elevateMethod('_callService');
 
-                /** @type {poodle.Request} */
+                /**
+                 * Request associated with the service call.
+                 * @type {poodle.Request}
+                 */
                 this.request = request;
 
                 /**
