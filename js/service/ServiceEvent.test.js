@@ -107,7 +107,6 @@
             serviceEvent.getResponseNode('foo');
         }, "should raise exception on invalid argument");
 
-
         result = serviceEvent.getResponseNodeAsHash();
         ok(result.isA(sntls.Hash), "should return a Hash instance");
         strictEqual(result.items, serviceEvent.responseNode,
@@ -151,6 +150,14 @@
 
         strictEqual(serviceEvent.setJqXhr(jqXhr), serviceEvent, "should be chainable");
         strictEqual(serviceEvent.jqXhr, jqXhr, "should set jqZhr property");
+    });
+
+    test("HTTP status getter", function () {
+        var jqXhr = {status: 1},
+            serviceEvent = p$.ServiceEvent.create('foo')
+                .setJqXhr(jqXhr);
+
+        equal(serviceEvent.getHttpStatus(), 1, "should return jqXHR object's status property");
     });
 
     test("Cloning", function () {

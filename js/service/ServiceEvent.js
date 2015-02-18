@@ -139,6 +139,15 @@ troop.postpone(poodle, 'ServiceEvent', function () {
             },
 
             /**
+             * Retrieves HTTP status code for the response.
+             * @returns {number}
+             */
+            getHttpStatus: function () {
+                var jqXhr = this.jqXhr;
+                return jqXhr && jqXhr.status;
+            },
+
+            /**
              * Clones event instance. In addition to `evan.Event.clone()`, also copies service-specific properties
              * (by reference).
              * @param {sntls.Path} [currentPath]
