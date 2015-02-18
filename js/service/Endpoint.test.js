@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$ */
+/*global dessert, troop, sntls, e$, b$, m$, s$, poodle, c$ */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -8,7 +8,7 @@
     test("Conversion from string", function () {
         var endpoint = 'foo/bar'.toEndpoint();
 
-        ok(endpoint.isA(p$.Endpoint), "should return Endpoint instance");
+        ok(endpoint.isA(poodle.Endpoint), "should return Endpoint instance");
         equal(endpoint.locationPath.toString(), 'foo>bar',
             "should set locationPath to the one specified in slash notation");
 
@@ -19,8 +19,8 @@
     test("Conversion from array", function () {
         var endpoint = ['foo', 'bar'].toEndpoint();
 
-        ok(endpoint.isA(p$.Endpoint), "should return Endpoint instance");
-        ok(endpoint.isA(p$.Endpoint), "should return Endpoint instance");
+        ok(endpoint.isA(poodle.Endpoint), "should return Endpoint instance");
+        ok(endpoint.isA(poodle.Endpoint), "should return Endpoint instance");
         equal(endpoint.locationPath.toString(), 'foo>bar',
             "should set locationPath to the one specified as array");
     });
@@ -29,7 +29,7 @@
         var locationPath = 'foo>bar'.toPath(),
             endpoint = locationPath.toEndpoint();
 
-        ok(endpoint.isA(p$.Endpoint), "should return Endpoint instance");
+        ok(endpoint.isA(poodle.Endpoint), "should return Endpoint instance");
         strictEqual(endpoint.locationPath, locationPath,
             "should set locationPath to the one that was converted");
     });

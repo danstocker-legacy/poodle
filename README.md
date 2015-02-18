@@ -25,7 +25,7 @@ POSTing to an endpoint:
 Capturing the service's successful return:
 
     '/endpoint/path'.toEndpoint()
-        .subscribeTo(p$.Service.EVENT_SERVICE_SUCCESS, function (event) {
+        .subscribeTo(poodle.Service.EVENT_SERVICE_SUCCESS, function (event) {
             console.log("service returned with response", event.responseNode);
         })
 
@@ -37,6 +37,6 @@ Loading a static image:
 Capturing the successful loading of the image into an image element:
 
     '/images/foo.jpg'.toImageUrl()
-        .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_SUCCESS, function (event) {
+        .subscribeTo(poodle.Image.EVENT_IMAGE_LOAD_SUCCESS, function (event) {
             console.log("image loaded into", event.imageElement);
         });

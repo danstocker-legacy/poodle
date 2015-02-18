@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$ */
+/*global dessert, troop, sntls, e$, b$, m$, s$, poodle, c$ */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -7,20 +7,20 @@
 
     test("Instantiation", function () {
         raises(function () {
-            p$.Request.create();
+            poodle.Request.create();
         }, "should raise exception on absent arguments");
 
         raises(function () {
-            p$.Request.create('foo');
+            poodle.Request.create('foo');
         }, "should raise exception on invalid endpoint argument");
 
         raises(function () {
-            p$.Request.create('foo/bar'.toEndpoint(), 'foo');
+            poodle.Request.create('foo/bar'.toEndpoint(), 'foo');
         }, "should raise exception on invalid parameters argument");
 
         var endpoint = 'foo/bar'.toEndpoint(),
             params = {},
-            request = p$.Request.create(endpoint, params);
+            request = poodle.Request.create(endpoint, params);
 
         strictEqual(request.endpoint, endpoint, "should set endpoint property to the one specified");
         equal(request.httpMethod, 'GET', "should set HTTP method property to 'GET'");
@@ -34,7 +34,7 @@
         var params = {},
             request = 'foo/bar'.toRequest(params);
 
-        ok(request.isA(p$.Request), "should return a Request instance");
+        ok(request.isA(poodle.Request), "should return a Request instance");
         equal(request.endpoint.toString(), 'foo/bar', "should set endpoint to one based on the string");
         strictEqual(request.params.items, params, "should set params to the one specified");
     });
@@ -43,7 +43,7 @@
         var params = {},
             request = ['foo', 'bar'].toRequest(params);
 
-        ok(request.isA(p$.Request), "should return a Request instance");
+        ok(request.isA(poodle.Request), "should return a Request instance");
         equal(request.endpoint.toString(), 'foo/bar', "should set endpoint to one based on the array");
         strictEqual(request.params.items, params, "should set params to the one specified");
     });
@@ -53,7 +53,7 @@
             endpoint = 'foo/bar'.toEndpoint(),
             request = endpoint.toRequest(params);
 
-        ok(request.isA(p$.Request), "should return a Request instance");
+        ok(request.isA(poodle.Request), "should return a Request instance");
         strictEqual(request.endpoint, endpoint, "should set endpoint property to the endpoint converted");
         strictEqual(request.params.items, params, "should set params to the one specified");
     });

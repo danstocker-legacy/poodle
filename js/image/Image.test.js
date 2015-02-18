@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$, $ */
+/*global dessert, troop, sntls, e$, b$, m$, s$, poodle, c$, $ */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -7,15 +7,15 @@
 
     test("Instantiation", function () {
         raises(function () {
-            p$.Image.create();
+            poodle.Image.create();
         }, "should raise exception on no arguments");
 
         raises(function () {
-            p$.Image.create('foo');
+            poodle.Image.create('foo');
         }, "should raise exception on invalid argument");
 
         var imageUrl = 'foo/bar'.toImageUrl(),
-            image = p$.Image.create(imageUrl);
+            image = poodle.Image.create(imageUrl);
 
         strictEqual(image.imageUrl, imageUrl, "should set imageUrl property");
         strictEqual(image.eventPath, imageUrl.eventPath, "should set eventPath property");
@@ -25,7 +25,7 @@
         var imageUrl = 'foo/bar'.toImageUrl(),
             image = imageUrl.toImage();
 
-        ok(image.isA(p$.Image), "should return an Image instance");
+        ok(image.isA(poodle.Image), "should return an Image instance");
         strictEqual(image.imageUrl, imageUrl, "should set imageUrl property to self");
     });
 
@@ -51,16 +51,16 @@
         });
 
         'foo/bar'.toImageUrl()
-            .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_START, function (event) {
-                ok(event.isA(p$.ImageEvent), "should trigger image load start event");
+            .subscribeTo(poodle.Image.EVENT_IMAGE_LOAD_START, function (event) {
+                ok(event.isA(poodle.ImageEvent), "should trigger image load start event");
                 equal(event.originalPath.toString(), 'image>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
                     "should set event's imageElement to created image element");
             })
-            .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_SUCCESS, function (event) {
-                ok(event.isA(p$.ImageEvent), "should trigger image load success event");
+            .subscribeTo(poodle.Image.EVENT_IMAGE_LOAD_SUCCESS, function (event) {
+                ok(event.isA(poodle.ImageEvent), "should trigger image load success event");
                 equal(event.originalPath.toString(), 'image>foo>bar', "should trigger success event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
@@ -104,16 +104,16 @@
         });
 
         'foo/bar'.toImageUrl()
-            .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_START, function (event) {
-                ok(event.isA(p$.ImageEvent), "should trigger image load start event");
+            .subscribeTo(poodle.Image.EVENT_IMAGE_LOAD_START, function (event) {
+                ok(event.isA(poodle.ImageEvent), "should trigger image load start event");
                 equal(event.originalPath.toString(), 'image>foo>bar', "should trigger start event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");
                 strictEqual(event.imageElement, imageElement,
                     "should set event's imageElement to created image element");
             })
-            .subscribeTo(p$.Image.EVENT_IMAGE_LOAD_FAILURE, function (event) {
-                ok(event.isA(p$.ImageEvent), "should trigger image load failure event");
+            .subscribeTo(poodle.Image.EVENT_IMAGE_LOAD_FAILURE, function (event) {
+                ok(event.isA(poodle.ImageEvent), "should trigger image load failure event");
                 equal(event.originalPath.toString(), 'image>foo>bar', "should trigger failure event on correct path");
                 strictEqual(event.imageUrl, image.imageUrl,
                     "should set event's imageUrl to image's imageUrl");

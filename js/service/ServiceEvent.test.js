@@ -1,4 +1,4 @@
-/*global dessert, troop, sntls, e$, b$, m$, s$, p$, c$ */
+/*global dessert, troop, sntls, e$, b$, m$, s$, poodle, c$ */
 /*global module, test, expect, ok, equal, strictEqual, notStrictEqual, deepEqual, notDeepEqual, raises */
 (function () {
     "use strict";
@@ -6,7 +6,7 @@
     module("Service Event");
 
     test("Instantiation", function () {
-        var serviceEvent = p$.ServiceEvent.create('foo');
+        var serviceEvent = poodle.ServiceEvent.create('foo');
 
         ok(serviceEvent.hasOwnProperty('request'), "should initialize request property");
         equal(serviceEvent.request, undefined, "should set request property to undefined");
@@ -17,16 +17,16 @@
     });
 
     test("Event surrogate", function () {
-        ok(e$.Event.create('foo', p$.serviceEventSpace).isA(p$.ServiceEvent), "should return ServiceEvent instance");
+        ok(e$.Event.create('foo', poodle.serviceEventSpace).isA(poodle.ServiceEvent), "should return ServiceEvent instance");
     });
 
     test("Spawning event", function () {
-        ok(p$.serviceEventSpace.spawnEvent('foo').isA(p$.ServiceEvent), "should return ServiceEvent instance");
+        ok(poodle.serviceEventSpace.spawnEvent('foo').isA(poodle.ServiceEvent), "should return ServiceEvent instance");
     });
 
     test("Request setter", function () {
         var request = 'foo/bar'.toRequest(),
-            serviceEvent = p$.ServiceEvent.create('foo');
+            serviceEvent = poodle.ServiceEvent.create('foo');
 
         raises(function () {
             serviceEvent.setRequest('foo');
@@ -39,7 +39,7 @@
     test("Request parameter getter", function () {
         expect(3);
 
-        var serviceEvent = p$.ServiceEvent.create('foo'),
+        var serviceEvent = poodle.ServiceEvent.create('foo'),
             requestParam = {};
 
         equal(serviceEvent.getRequestParam('bar'), undefined,
@@ -61,7 +61,7 @@
 
     test("Response node setter", function () {
         var responseNode = {},
-            serviceEvent = p$.ServiceEvent.create('foo');
+            serviceEvent = poodle.ServiceEvent.create('foo');
 
         strictEqual(serviceEvent.setResponseNode(responseNode), serviceEvent, "should be chainable");
         strictEqual(serviceEvent.responseNode, responseNode, "should set responseNode property");
@@ -70,7 +70,7 @@
     test("Response node getter", function () {
         expect(5);
 
-        var serviceEvent = p$.ServiceEvent.create('foo')
+        var serviceEvent = poodle.ServiceEvent.create('foo')
                 .setResponseNode({}),
             responseNode = {};
 
@@ -98,7 +98,7 @@
     test("Response hash getter", function () {
         expect(7);
 
-        var serviceEvent = p$.ServiceEvent.create('foo')
+        var serviceEvent = poodle.ServiceEvent.create('foo')
                 .setResponseNode({}),
             responseNode = {},
             result;
@@ -130,7 +130,7 @@
     });
 
     test("Response field getter", function () {
-        var serviceEvent = p$.ServiceEvent.create('foo');
+        var serviceEvent = poodle.ServiceEvent.create('foo');
 
         equal(serviceEvent.getResponseField('hello'), undefined,
             "should return undefined when no responseNode is set");
@@ -146,7 +146,7 @@
 
     test("XHR setter", function () {
         var jqXhr = {},
-            serviceEvent = p$.ServiceEvent.create('foo');
+            serviceEvent = poodle.ServiceEvent.create('foo');
 
         strictEqual(serviceEvent.setJqXhr(jqXhr), serviceEvent, "should be chainable");
         strictEqual(serviceEvent.jqXhr, jqXhr, "should set jqZhr property");
@@ -154,14 +154,14 @@
 
     test("HTTP status getter", function () {
         var jqXhr = {status: 1},
-            serviceEvent = p$.ServiceEvent.create('foo')
+            serviceEvent = poodle.ServiceEvent.create('foo')
                 .setJqXhr(jqXhr);
 
         equal(serviceEvent.getHttpStatus(), 1, "should return jqXHR object's status property");
     });
 
     test("Cloning", function () {
-        var serviceEvent = p$.ServiceEvent.create('foo')
+        var serviceEvent = poodle.ServiceEvent.create('foo')
                 .setRequest('foo/bar'.toRequest())
                 .setResponseNode({})
                 .setJqXhr({}),
@@ -169,7 +169,7 @@
 
         result = serviceEvent.clone('foo>bar'.toPath());
 
-        ok(result.isA(p$.ServiceEvent), "should return ServiceEvent instance");
+        ok(result.isA(poodle.ServiceEvent), "should return ServiceEvent instance");
         notStrictEqual(result, serviceEvent, "should return a different ServiceEvent instance");
         strictEqual(result.request, serviceEvent.request, "should set request property on clone");
         strictEqual(result.responseNode, serviceEvent.responseNode, "should set responseNode property on clone");
