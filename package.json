@@ -1,13 +1,13 @@
 {
     "name"           : "poodle",
-    "version"        : "0.3.11",
+    "version"        : "0.3.12",
     "description"    : "Transport framework",
     "keywords"       : [
         "service", "transport", "api", "ajax",
         "image loading"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
-    "copyright"      : "Copyright (c) 2014 Dan Stocker",
+    "copyright"      : "Copyright (c) 2014-2015 Dan Stocker",
     "license"        : "MIT",
     "repository"     : {
         "type": "git",
@@ -16,8 +16,8 @@
     "dependencies"   : {
         "dessert": "~0.3.2",
         "troop"  : "~0.8.0",
-        "sntls"  : "~0.18.0",
-        "evan"   : "~0.5.0",
+        "sntls"  : "~0.18.0 || ~0.19.0",
+        "evan"   : "~0.5.0 || ~0.6.0",
         "jquery" : "~2.1.0",
         "q"      : "~1.1.2"
     },
