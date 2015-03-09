@@ -54,7 +54,18 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * Default timeout for service calls in [ms].
              * @constant
              */
-            SERVICE_TIMEOUT: 30000
+            SERVICE_TIMEOUT: 30000,
+
+            /**
+             * @type {object}
+             * @constant
+             */
+            defaultHttpStatuses: {
+                GET   : 200,
+                POST  : 201,
+                PUT   : 200,
+                DELETE: 204
+            }
         })
         .addPrivateMethods(/** @lends poodle.Service# */{
             /**
@@ -268,14 +279,19 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * @example
              * service.callOfflineServiceWithSuccess({foo: 'bar'});
              * @param {*} responseNode Response body to be returned.
+             * @param {number} [httpStatus] HTTP status code for the response.
              * @returns {jQuery.Promise}
              */
-            callOfflineServiceWithSuccess: function (responseNode) {
+            callOfflineServiceWithSuccess: function (responseNode, httpStatus) {
+                httpStatus = httpStatus || // whet the user specified
+                             this.defaultHttpStatuses[this.request.httpMethod] || // or a known default value
+                             200; // or 200
+
                 var deferred = $.Deferred();
 
                 // making sure service call will be async, just like a real ajax call
                 setTimeout(function () {
-                    deferred.resolve(responseNode, null, null);
+                    deferred.resolve(responseNode, null, {status: httpStatus});
                 }, 0);
 
                 return this._triggerEvents(deferred.promise());
@@ -285,14 +301,17 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              * Calls service in offline mode, that will return with failure, carrying the specified error value.
              * Offline service calls behave exactly like online calls except they don't make any ajax requests.
              * @param {*} errorThrown Error value to be returned.
+             * @param {number} [httpStatus] HTTP status code for the response.
              * @returns {jQuery.Promise}
              */
-            callOfflineServiceWithFailure: function (errorThrown) {
+            callOfflineServiceWithFailure: function (errorThrown, httpStatus) {
+                httpStatus = httpStatus || 400;
+
                 var deferred = $.Deferred();
 
                 // making sure service call will be async, just like a real ajax call
                 setTimeout(function () {
-                    deferred.reject(null, null, errorThrown);
+                    deferred.reject({status: httpStatus}, null, errorThrown);
                 }, 0);
 
                 return this._triggerEvents(deferred.promise());

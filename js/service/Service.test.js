@@ -358,7 +358,7 @@
                 ajaxPromise.done(function (responseNode, textStatus, jqXHR) {
                     strictEqual(responseNode, offlineResponseNode, "should pass response node to resolved promise");
                     strictEqual(textStatus, null, "should pass null as textStatus to resolved promise");
-                    strictEqual(jqXHR, null, "should pass null as jqXhr to resolved promise");
+                    deepEqual(jqXHR, {status: 200}, "should pass object with status as jqXhr to resolved promise");
                     start();
                 });
             }
@@ -377,7 +377,7 @@
         service.addMocks({
             _triggerEvents: function (ajaxPromise) {
                 ajaxPromise.fail(function (jqXHR, textStatus, errorThrown) {
-                    strictEqual(jqXHR, null, "should pass null as jqXhr to rejected promise");
+                    deepEqual(jqXHR, {status: 400}, "should pass object with status as jqXhr to rejected promise");
                     strictEqual(textStatus, null, "should pass null as textStatus to rejected promise");
                     strictEqual(errorThrown, offlineErrorThrown, "should pass errorThrown to rejected promise");
                     start();

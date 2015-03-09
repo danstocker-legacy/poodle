@@ -1,6 +1,6 @@
 {
     "name"           : "poodle",
-    "version"        : "0.3.12",
+    "version"        : "0.3.13",
     "description"    : "Transport framework",
     "keywords"       : [
         "service", "transport", "api", "ajax",
