@@ -30,6 +30,7 @@ troop.postpone(poodle, 'Request', function () {
                 "HEAD"   : "HEAD",
                 "POST"   : "POST",
                 "PUT"    : "PUT",
+                "PATCH"  : "PATCH",
                 "DELETE" : "DELETE"
             },
 
