@@ -85,13 +85,12 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
              */
             _triggerEvents: function (ajaxPromise) {
                 var that = this,
-                    request = this.request,
-                    eventPath = this.eventPath;
+                    request = this.request;
 
                 // sending notification about starting the service
                 this.spawnEvent(this.EVENT_SERVICE_START)
                     .setRequest(request)
-                    .triggerSync(eventPath);
+                    .triggerSync();
 
                 // adding handlers
                 ajaxPromise
@@ -100,14 +99,14 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                             .setRequest(request)
                             .setResponseNode(responseNode)
                             .setJqXhr(jqXHR)
-                            .triggerSync(eventPath);
+                            .triggerSync();
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         that.spawnEvent(that.EVENT_SERVICE_FAILURE)
                             .setRequest(request)
                             .setResponseNode(errorThrown)
                             .setJqXhr(jqXHR)
-                            .triggerSync(eventPath);
+                            .triggerSync();
                     });
 
                 return ajaxPromise;
@@ -121,7 +120,6 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
             _callService: function (ajaxOptions) {
                 var that = this,
                     request = this.request,
-                    eventPath = this.eventPath,
                     requestBody,
                     requestHeaders;
 
@@ -161,11 +159,8 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                             .setRequest(request)
                             .setResponseNode(errorThrown)
                             .setJqXhr(jqXHR)
-                            // TODO: Replaces existing payload.
-                            .setPayload({
-                                stop: stop
-                            })
-                            .triggerSync(eventPath);
+                            .setPayloadItem('stop', stop)
+                            .triggerSync();
                     });
 
                 this._triggerEvents(promise);

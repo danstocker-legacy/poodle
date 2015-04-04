@@ -72,27 +72,26 @@ troop.postpone(poodle, 'File', function () {
             _readFile: function () {
                 var that = this,
                     filePath = this.filePath,
-                    eventPath = this.eventPath,
                     deferred = Q.defer(),
                     event;
 
                 this.spawnEvent(this.EVENT_FILE_READ_START)
                     .setFilePath(filePath)
-                    .triggerSync(eventPath);
+                    .triggerSync();
 
                 this._readFileProxy(filePath.toString(), null, function (err, data) {
                     if (err) {
                         event = that.spawnEvent(that.EVENT_FILE_READ_FAILURE)
                             .setFilePath(filePath)
                             .setFileError(err)
-                            .triggerSync(eventPath);
+                            .triggerSync();
 
                         deferred.reject(event);
                     } else {
                         event = that.spawnEvent(that.EVENT_FILE_READ_SUCCESS)
                             .setFilePath(filePath)
                             .setFileData(data)
-                            .triggerSync(eventPath);
+                            .triggerSync();
 
                         deferred.resolve(event);
                     }
@@ -141,12 +140,11 @@ troop.postpone(poodle, 'File', function () {
              */
             readFileSync: function () {
                 var filePath = this.filePath,
-                    eventPath = this.eventPath,
                     data;
 
                 this.spawnEvent(this.EVENT_FILE_READ_START)
                     .setFilePath(filePath)
-                    .triggerSync(eventPath);
+                    .triggerSync();
 
                 try {
                     data = this._readFileSyncProxy(filePath.toString(), null);
@@ -154,12 +152,12 @@ troop.postpone(poodle, 'File', function () {
                     this.spawnEvent(this.EVENT_FILE_READ_SUCCESS)
                         .setFilePath(filePath)
                         .setFileData(data)
-                        .triggerSync(eventPath);
+                        .triggerSync();
                 } catch (e) {
                     this.spawnEvent(this.EVENT_FILE_READ_FAILURE)
                         .setFilePath(filePath)
                         .setFileError(e)
-                        .triggerSync(eventPath);
+                        .triggerSync();
                 }
 
                 return data;

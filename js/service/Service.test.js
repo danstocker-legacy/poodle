@@ -230,10 +230,11 @@
         });
 
         poodle.ServiceEvent.addMocks({
-            triggerSync: function (path) {
+            triggerSync: function () {
                 if (this.eventName === poodle.Service.EVENT_SERVICE_SUCCESS) {
                     ok(true, "should trigger success event");
-                    ok(path.equals(request.endpoint.eventPath, "should trigger event on endpoint's event path"));
+                    ok(this.currentPath.equals(request.endpoint.eventPath,
+                        "should trigger event on endpoint's event path"));
                     strictEqual(this.request, request, "should set request on event");
                     strictEqual(this.responseNode, responseNode, "should set responseNode on event");
                     strictEqual(this.jqXhr, jqXhr, "should set jqXhr on event");
@@ -271,10 +272,11 @@
         });
 
         poodle.ServiceEvent.addMocks({
-            triggerSync: function (path) {
+            triggerSync: function () {
                 if (this.eventName === poodle.Service.EVENT_SERVICE_FAILURE) {
                     ok(true, "should trigger failure event");
-                    ok(path.equals(request.endpoint.eventPath, "should trigger event on endpoint's event path"));
+                    ok(this.currentPath.equals(request.endpoint.eventPath,
+                        "should trigger event on endpoint's event path"));
                     strictEqual(this.request, request, "should set request on event");
                     strictEqual(this.responseNode, errorThrown, "should set responseNode on event");
                     strictEqual(this.jqXhr, jqXhr, "should set jqXhr on event");

@@ -93,21 +93,20 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
             loadImage: function () {
                 var that = this,
                     imageUrl = this.imageUrl,
-                    eventPath = this.eventPath,
                     imageElement = this._createImageElementProxy(),
                     deferred = $.Deferred();
 
                 this.spawnEvent(this.EVENT_IMAGE_LOAD_START)
                     .setImageLocation(imageUrl)
                     .setImageElement(imageElement)
-                    .triggerSync(eventPath);
+                    .triggerSync();
 
                 this._loadImage(imageElement, imageUrl.toString())
                     .done(function () {
                         that.spawnEvent(that.EVENT_IMAGE_LOAD_SUCCESS)
                             .setImageLocation(imageUrl)
                             .setImageElement(imageElement)
-                            .triggerSync(eventPath);
+                            .triggerSync();
 
                         deferred.resolve(imageUrl, imageElement);
                     })
@@ -115,7 +114,7 @@ troop.postpone(poodle, 'Image', function (ns, className, /**jQuery*/$) {
                         that.spawnEvent(that.EVENT_IMAGE_LOAD_FAILURE)
                             .setImageLocation(imageUrl)
                             .setImageElement(imageElement)
-                            .triggerSync(eventPath);
+                            .triggerSync();
 
                         deferred.reject(imageUrl, imageElement);
                     });
