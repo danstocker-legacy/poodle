@@ -143,7 +143,7 @@ troop.postpone(poodle, 'Service', function (ns, className, /**jQuery*/$) {
                     .mergeWith(sntls.Collection.create({
                         dataType: "json",
                         type    : request.httpMethod,
-                        url     : request.endpoint.toString(),
+                        url     : request.getUrl(),
                         headers : requestHeaders,
                         data    : requestBody,
                         timeout : this.SERVICE_TIMEOUT
