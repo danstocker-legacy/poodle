@@ -173,6 +173,14 @@ troop.postpone(poodle, 'Request', function () {
             },
 
             /**
+             * Fetches the URL for the string. Same as the stringified endpoint by default.
+             * @returns {string}
+             */
+            getUrl: function () {
+                return this.endpoint.toString();
+            },
+
+            /**
              * Serializes request as a path consisting of the HTTP method, endpoint and parameters.
              * TODO: Include headers as well?
              * @returns {string}
@@ -243,8 +251,7 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
                 return poodle.Request.create(this.toEndpoint(), params);
             }
         },
-        false, false, false
-    );
+        false, false, false);
 
     troop.Properties.addProperties.call(
         String.prototype,
@@ -260,6 +267,5 @@ troop.amendPostponed(poodle, 'Endpoint', function () {
                 return poodle.Request.create(this.toEndpoint(), params);
             }
         },
-        false, false, false
-    );
+        false, false, false);
 }());

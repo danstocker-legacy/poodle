@@ -159,4 +159,9 @@
             ['mona', 'lisa']
         ], "should add all key-value pairs to params collection");
     });
+
+    test("URL getter", function () {
+        var request = 'foo/bar'.toRequest();
+        equal(request.getUrl(), 'foo/bar', "should return stringified endpoint");
+    });
 }());

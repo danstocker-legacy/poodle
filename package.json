@@ -1,6 +1,6 @@
 {
     "name"           : "poodle",
-    "version"        : "0.3.16",
+    "version"        : "0.3.17",
     "description"    : "Transport framework",
     "keywords"       : [
         "service",
@@ -20,7 +20,7 @@
         "dessert": "~0.3.2",
         "evan"   : "~0.7.0",
         "jquery" : "~2.1.0",
-        "sntls"  : "^0.20.0",
+        "sntls"  : "~0.20.0",
         "troop"  : "~0.8.0"
     },
     "devDependencies": {
