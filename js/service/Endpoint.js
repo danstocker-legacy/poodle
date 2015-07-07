@@ -65,7 +65,7 @@ troop.amendPostponed(sntls, 'Path', function () {
              */
             toEndpoint: function () {
                 return poodle.Endpoint.create(this
-                    .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
+                    .replace(poodle.Endpoint.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
             }

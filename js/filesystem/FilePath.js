@@ -80,7 +80,7 @@ troop.amendPostponed(sntls, 'Path', function () {
              */
             toFilePath: function () {
                 return poodle.FilePath.create(this
-                    .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
+                    .replace(poodle.FilePath.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
             }

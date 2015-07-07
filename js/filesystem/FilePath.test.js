@@ -12,7 +12,7 @@
         equal(filePath.locationPath.toString(), 'foo>bar',
             "should set locationPath to the one specified in slash notation");
 
-        equal('//foo/bar//'.toFilePath().locationPath.toString(), 'foo>bar',
+        equal('//foo/bar//'.toFilePath().locationPath.toString(), '>foo>bar',
             "should remove leading and trailing slashes from string notation");
     });
 

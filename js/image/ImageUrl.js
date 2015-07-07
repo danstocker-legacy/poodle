@@ -73,7 +73,7 @@ troop.amendPostponed(sntls, 'Path', function () {
              */
             toImageUrl: function () {
                 return poodle.ImageUrl.create(this
-                    .replace(poodle.Location.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
+                    .replace(poodle.ImageUrl.LEADING_TRAILING_SLASHES, '') // removing leading & trailing slashes
                     .split('/') // splitting up slash-separated path
                     .toPath());
             }

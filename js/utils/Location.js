@@ -39,10 +39,11 @@ troop.postpone(poodle, 'Location', function () {
             LOCATION_ROOT_PATH: undefined,
 
             /**
+             * TODO: Revisit overrides.
              * @constant
              * @type {RegExp}
              */
-            LEADING_TRAILING_SLASHES: /(^\/+)|(\/+$)/g
+            LEADING_TRAILING_SLASHES: /(^\/+(?=\/))|(\/+$)/g
         })
         .addMethods(/** @lends poodle.Location# */{
             /**
