@@ -1,6 +1,6 @@
 {
     "name"           : "poodle",
-    "version"        : "0.3.17",
+    "version"        : "0.4.0",
     "description"    : "Transport framework",
     "keywords"       : [
         "service",
@@ -18,10 +18,11 @@
     },
     "dependencies"   : {
         "dessert": "~0.3.2",
-        "evan"   : "~0.7.0",
+        "evan"   : "~0.8.0",
         "jquery" : "~2.1.0",
-        "sntls"  : "~0.20.0",
-        "troop"  : "~0.8.0"
+        "q"      : "^1.4.0",
+        "sntls"  : "~0.21.0",
+        "troop"  : "~0.9.0"
     },
     "devDependencies": {
         "QUnitAdapter"        : "https://dl.dropboxusercontent.com/u/9258903/packages/QUnitAdapter-0.1.0.tgz",
@@ -35,8 +36,7 @@
         "grunt-regex-replace" : "~0.2.6",
         "grunt-yui-compressor": "~0.4.0",
         "node-troop"          : "0.2.0",
-        "phil"                : "~0.2.3",
-        "q"                   : "^1.4.0"
+        "phil"                : "~0.2.3"
     },
     "files"          : [
         "poodle.js"
